@@ -29,6 +29,5 @@ app.MapControllers();
 
 // optional: redirect root to the UI
 app.MapGet("/", () => Results.Redirect("/scalar"));
-app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.Run();
