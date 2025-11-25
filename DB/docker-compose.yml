@@ -1,0 +1,33 @@
+name: delifhery
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${Sa_Password:-Mark_delifhery_swk5!}
+    ports:
+      - 1433:1433
+    restart: always
+    volumes: 
+      - dbdata:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -U sa -P ${Sa_Password:-Mark_delifhery_swk5!} -C -Q 'SELECT 1' || exit 1"]
+      interval: 3s
+      retries: 10
+      start_period: 5s
+      timeout: 3s
+
+  init-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./init-db.sql:/usr/src/app/init-db.sql
+    command: >
+      bash -c "
+      /opt/mssql-tools18/bin/sqlcmd -S db -U sa -P ${Sa_Password:-Mark_delifhery_swk5!} -C -i /usr/src/app/init-db.sql
+      "
+volumes:
+  dbdata:
