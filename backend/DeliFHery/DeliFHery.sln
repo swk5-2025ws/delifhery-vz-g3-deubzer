@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36518.9 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliFHery.API", "DeliFHery.API\DeliFHery.API.csproj", "{4D905B4D-BD01-4FA1-B2BE-825138CE66FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliFHery.Tests", "DeliFHery.Tests\DeliFHery.Tests.csproj", "{B204500A-9C03-4379-975A-93E0956DA8BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{4D905B4D-BD01-4FA1-B2BE-825138CE66FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D905B4D-BD01-4FA1-B2BE-825138CE66FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D905B4D-BD01-4FA1-B2BE-825138CE66FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B204500A-9C03-4379-975A-93E0956DA8BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B204500A-9C03-4379-975A-93E0956DA8BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B204500A-9C03-4379-975A-93E0956DA8BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B204500A-9C03-4379-975A-93E0956DA8BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
