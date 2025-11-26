@@ -15,3 +15,4 @@ wu rden Sie diese Anforderung lo sen?
 der E-Mails zuku nftig selbst vera ndern ko nnen – wie wu rden Sie diese Anforderung lo sen?
 10. Denken Sie an die Skalierbarkeit Ihres Projekts: Die O sterreichische Post mo chte Ihr Produkt mit u ber 500 Millionen Paketen pro Jahr nutzen. Was macht Ihnen am meisten Kopfzerbrechen?
 11. Wenn Sie das Projekt neu anfangen wu rden – was wu rden Sie anders machen?
+
