@@ -6,14 +6,27 @@ using DeliFHery.API.Models;
 namespace DeliFHery.API.Controllers
 {
     [ApiController]
-    [Route("api/customers")]
-    public class CustomerController : ControllerBase
+    [Route("api/[controller]")]
+    public class CustomersController : ControllerBase
     {
         private readonly ICustomerRepo _customerRepo;
-        public CustomerController(ICustomerRepo customerRepo)
+        public CustomersController(ICustomerRepo customerRepo)
         {
             _customerRepo = customerRepo;
         }
+
+        // GET /api/customers
+        [HttpGet]
+        public async Task<IActionResult> GetAll(CancellationToken ct = default)
+        {
+            var customers = await _customerRepo.GetAllCustomersAsync(ct);
+            if (customers == null)
+            {
+                return NotFound();
+            }
+            return Ok(customers);
+        }
+
         // POST /api/customers
         [HttpPost]
         public async Task<IActionResult> Create(Customer c, CancellationToken ct)
@@ -23,11 +36,15 @@ namespace DeliFHery.API.Controllers
         }
 
         // GET /api/customers/{id}
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id, CancellationToken ct = default)
         {
             var customer = await _customerRepo.GetByIdAsync(id, ct);
-            return customer is null ? NotFound() : Ok(customer);
+            if(customer == null)
+            {
+                return NotFound();
+            }
+            return Ok(customer);
         }
     }
 }
