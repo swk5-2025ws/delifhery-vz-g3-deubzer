@@ -7,13 +7,8 @@ namespace DeliFHery.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CustomersController : ControllerBase
+    public class CustomersController( ICustomerRepo _customerRepo) : ControllerBase
     {
-        private readonly ICustomerRepo _customerRepo;
-        public CustomersController(ICustomerRepo customerRepo)
-        {
-            _customerRepo = customerRepo;
-        }
 
         // GET /api/customers
         [HttpGet]
