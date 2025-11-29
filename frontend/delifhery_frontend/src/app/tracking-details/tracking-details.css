@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+:host {
+  display: block;
+  height: 100vh;
+  background-image: url('../../assets/tracking_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.font{
+  font-family: 'Inter', sans-serif;
+}
+
+.tracking_detail_container{
+  display: flex;
+  width: 100%;
+  height:100%;
+}
+.tracking_content_wrapper{
+  flex: 0.5;
+}
+.tracking_detail_wrapper{
+  flex:0.5;
+  display: flex;
+  flex-direction:row;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-top: 1rem;
+  padding-right:0.5rem;
+}
+
+.content_container{
+  width:100%;
+  height:100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+}
+.text1{
+  font-size: 26px;
+  color:#db4c3d;
+  font-family: Inter, sans-serif;
+  font-weight: bold;
+}
+.tracking_from_container{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap:1rem;
+  padding-top:1rem;
+}
+.tracking_to_container{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap:1rem;
+  padding-bottom:1rem;
+}
+.from_text{
+  width:25rem;
+  height:2rem;
+  font-family: Inter, sans-serif;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 20px;
+  background-color: white;
+  border:none;
+}
+.to_text{
+  width:25rem;
+  height:2rem;
+  font-family: Inter, sans-serif;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 20px;
+  background-color: white;
+  border:none;
+}
+
+.tracking_to_container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap:1rem;
+}
+
+.detail_container{
+  width:45%;
+  height:10%;
+  background-color:white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  border-radius:20px;
+  gap: 3px;
+  padding-left:0.5rem;
+}
+
+.tracking_detail_titel{
+  font-size: 20px;
+  color:#db4c3d;
+  font-weight: bold;
+}
+
+.tracking_detail_status,
+.tracking_detail_update{
+  font-size:13px;
+  color:#164375;
+}
