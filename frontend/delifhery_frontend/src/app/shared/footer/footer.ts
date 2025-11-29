@@ -1,0 +1,13 @@
+import { Component } from '@angular/core';
+import {NgOptimizedImage} from '@angular/common';
+
+@Component({
+  selector: 'app-footer',
+  standalone: true,
+  imports: [NgOptimizedImage],
+  templateUrl: './footer.html',
+  styleUrl: './footer.css',
+})
+export class Footer {
+
+}
