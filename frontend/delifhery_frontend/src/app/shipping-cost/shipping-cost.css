@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+:host {
+  display: block;
+  height: 100vh;
+  background-image: url('../../assets/home_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.shipping_cost_wrapper{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.shipping_cost_container{
+  padding:2rem;
+  width:70%;
+  height:60%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 20px;
+}
+.shipping_cost_info_container{
+  display:flex;
+  flex-direction: column;
+  gap:2rem;
+}
+
+.text1{
+  font-family: 'Inter',sans-serif;
+  font-size:29px;
+  color:#164375;
+  font-weight: bold;
+  padding-bottom: 1rem;
+}
+.secondText1{
+  padding-top:1rem;
+}
+.text2{
+  font-family: 'Inter',sans-serif;
+  font-size:16px;
+}
+.input_container{
+  display: flex;
+  flex-direction: row;
+  gap:2em;
+}
+
+.shipping_cost_weight_container{
+  display:flex;
+  width: 50%;
+  height:50%;
+  flex-direction: column;
+}
+.shipping_cost_weight{
+  flex:0.7;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap:2rem;
+}
+.shipping_cost_button{
+  flex:0.3;
+  display:flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.shipping_input{
+  border:none;
+  font-size:16px;
+  background-color: ghostwhite;
+  width:30%;
+  height:2rem;
+  padding-left:10px;
+  border-radius: 15px;
+}
+
+.shipping_button{
+  border:none;
+  width:13rem;
+  height:3.5rem;
+  border-radius:100px;
+  background-color: #db4c3d;
+  color:white;
+  font-size:20px;
+  font-family: 'Inter', sans-serif;
+
+  transition: 0.1s ease-in-out;
+}
+.shipping_button:hover{
+  transform: scale(1.05);
+}
+
+.shipping_cost_weight_container{
+  width:100%;
+  height:100%;
+}
+
+.width,.height,.weight{
+  display:flex;
+  gap:0.5rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+

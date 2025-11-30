@@ -5,11 +5,12 @@ import {Header} from './shared/header/header';
 import {Footer} from './shared/footer/footer';
 import {Tracking} from './tracking/tracking';
 import {TrackingDetails} from './tracking-details/tracking-details';
+import {ShippingCost} from './shipping-cost/shipping-cost';
 
 @Component({
   selector: 'app-root',
   standalone:true,
-  imports: [RouterOutlet, Home, Header, Footer, Tracking, TrackingDetails],
+  imports: [RouterOutlet, Home, Header, Footer, Tracking, ShippingCost, TrackingDetails],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

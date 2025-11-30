@@ -41,6 +41,19 @@ namespace DeliFHery.API.Repo
                FROM [dbo].[Customer];";
             return await _db.QueryAsync(sql, _mapper.MapCustomer, ct);
         }
+        public async Task<Customer?> GetByIdentityProviderUserIdAsync(string identityUserId, CancellationToken ct = default)
+        {
+            const string sql = @"
+                SELECT customer_id,
+                identity_provider_user_id,
+                username,
+                created_at
+                FROM [dbo].[Customer]
+                WHERE identity_provider_user_id = @id";
+            var result = await _db.QueryAsync(sql, _mapper.MapCustomer, ct,
+                new QueryParameter("id", identityUserId));
+            return result.FirstOrDefault();
+        }
 
         public async Task<Customer?> GetByIdAsync(int id, CancellationToken ct = default)
         {

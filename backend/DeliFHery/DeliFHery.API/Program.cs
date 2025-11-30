@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Services.AddCors(option =>
 {
@@ -20,6 +21,7 @@ builder.Services.AddCors(option =>
 });
 
 var keycloak = builder.Configuration.GetSection("KeyCloak");
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -34,7 +36,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAuthentication();
 
 builder.Services.AddControllers();
 
@@ -44,7 +45,7 @@ builder.Services.AddSingleton<DatabaseService>();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 
 var app = builder.Build();
-
+app.UseCors("AngularClient");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
