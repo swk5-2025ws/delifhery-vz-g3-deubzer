@@ -43,6 +43,7 @@ var connectionString = builder.Configuration.GetConnectionString("DatabaseConnec
 builder.Services.AddSingleton<IDbConnectionFactory>(c => new DbConnectionFactory(connectionString));
 builder.Services.AddSingleton<DatabaseService>();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
+builder.Services.AddScoped<IContactMethodRepo, ContactMethodRepo>();
 
 var app = builder.Build();
 app.UseCors("AngularClient");

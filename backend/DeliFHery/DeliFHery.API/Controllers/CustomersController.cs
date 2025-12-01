@@ -24,14 +24,6 @@ namespace DeliFHery.API.Controllers
             return Ok(customers);
         }
 
-        // POST /api/customers
-        [HttpPost]
-        public async Task<IActionResult> Create(Customer c, CancellationToken ct)
-        {
-            int id = await _customerRepo.CreateAsync(c, ct);
-            return Ok(new { id });
-        }
-
         // GET /api/customers/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id, CancellationToken ct = default)
@@ -73,7 +65,7 @@ namespace DeliFHery.API.Controllers
             }
             catch
             {
-                throw new NotImplementedException("here is the problem");
+
             }
 
             if (existing != null)

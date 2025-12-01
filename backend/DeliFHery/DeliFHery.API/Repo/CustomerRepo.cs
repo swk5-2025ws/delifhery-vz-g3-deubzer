@@ -1,7 +1,5 @@
 ﻿using DeliFHery.API.Interfaces;
-using System.Data.Common;
 using DeliFHery.API.Database;
-using DeliFHery.API.Interfaces;
 using DeliFHery.API.Models;
 using DeliFHery.API.Mappers;
 

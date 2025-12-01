@@ -109,5 +109,9 @@
   align-items: center;
   justify-content: flex-start;
 }
+.text3{
+  font-family: "Inter",sans-serif;
+  font-weight: bold;
+}
 
 
