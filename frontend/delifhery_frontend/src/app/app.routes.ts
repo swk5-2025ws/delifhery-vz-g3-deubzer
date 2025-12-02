@@ -3,6 +3,7 @@ import {Home} from './home/home';
 import {Tracking} from './tracking/tracking';
 import {TrackingDetails} from './tracking-details/tracking-details';
 import {ShippingCost} from './shipping-cost/shipping-cost';
+import {MyContact} from './my-contact/my-contact';
 
 export const routes: Routes = [
   {
@@ -25,5 +26,9 @@ export const routes: Routes = [
   {
     path: 'shippingCost',
     component: ShippingCost
+  },
+  {
+    path: 'myContacts',
+    component: MyContact
   }
 ];

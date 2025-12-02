@@ -20,7 +20,7 @@ namespace DeliFHery.API.Controllers
             var contactMethod = await _repo.ListForCustomerAsync(customerId);
             if (!contactMethod.Any())
             {
-                return NotFound("Customer has not ContactMethod");
+                return NotFound("Customer has no ContactMethod");
             }
             return Ok(contactMethod);
         }
