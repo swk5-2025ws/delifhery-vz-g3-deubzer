@@ -11,11 +11,11 @@ namespace DeliFHery.API.Controllers
 {
     
     [ApiController]
-    [Route("api/customers/currentUser/[controller]")]
+    [Route("api/customers/[controller]")]
     public class ContactMethodController(IContactMethodRepo _repo, ICustomerRepo _customer_repo) : ControllerBase
     {
         [HttpGet("{customerId}")]
-        public async Task<IActionResult> GetALl([FromRoute] int customerId, CancellationToken ct)
+        public async Task<IActionResult> GetALl([FromRoute] Guid customerId, CancellationToken ct)
         {
             var contactMethod = await _repo.ListForCustomerAsync(customerId);
             if (!contactMethod.Any())
@@ -51,11 +51,11 @@ namespace DeliFHery.API.Controllers
             return Ok(contactMethods);
         }
 
-        // POST /api/customers/currentUser/contactMethod
+        // POST /api/customers/contactMethod
         [Authorize]
         [HttpPost]
         public async Task<ActionResult<ContactMethod>> CreateContactMethodForCurrentUser(
-            [FromBody] CreateContactMethodRequest request,
+            [FromBody] CreateContactMethodRequestDto request,
             CancellationToken ct)
         {
             var sub =

@@ -22,7 +22,7 @@ namespace DeliFHery.API.Repo
                             INSERT INTO dbo.ContactMethod(customer_id, type, value, is_verified)
                             VALUES (@customerId, @type , @value, @is_verified);
                             SELECT SCOPE_IDENTITY();";
-            return _db.ExecuteInsertAsync(sql, ct,
+            return _db.ExecuteInsertIntAsync(sql, ct,
                   new QueryParameter("customerId", contactMethod.customerId),
                   new QueryParameter("type", contactMethod.type),
                   new QueryParameter("value", contactMethod.value),
@@ -34,7 +34,7 @@ namespace DeliFHery.API.Repo
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<ContactMethod>> ListForCustomerAsync(int customerId, CancellationToken ct = default)
+        public async Task<IEnumerable<ContactMethod>> ListForCustomerAsync(Guid customerId, CancellationToken ct = default)
         {
             const string sql = @"
                             SELECT contact_id,

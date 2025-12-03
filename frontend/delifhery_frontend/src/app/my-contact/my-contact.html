@@ -5,7 +5,8 @@
       <a class="text2">Manage your email addresses and phone numbers.</a>
     </div>
     <div class="search_bar_container">
-    <input type="text" placeholder="Search contacts" class="search_bar">
+      <img ngSrc="/icons/search.svg" width="25" height="25" alt="Search Icon" class="search_image">
+      <input type="text" placeholder="Search contacts" class="search_bar">
     </div>
     <div class="my_contacts_list">
 
@@ -15,27 +16,49 @@
     <div class="add_new_text_container">
       <a class="text1">Add new</a>
     </div>
-    <div class="choose_container">
-      <form>
-
+    <div class="choose_container_wrapper">
+      <form class="choose_container">
+        <label>
+          <input
+            type="radio"
+            name="contactType"
+            value="email"
+            class="email_radio"
+            [(ngModel)] = "selectedType"
+          />
+          Email
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="contactType"
+            value="phone"
+            class="phone_radio"
+            [(ngModel)]="selectedType"/>
+          Phone
+        </label>
       </form>
     </div>
-    <ng-template>
+    <ng-container
+      [ngTemplateOutlet]="selectedType === 'email' ? emailTemplate : phoneTemplate"
+    >
+    </ng-container>
+    <ng-template #emailTemplate >
       <div class="input_fields_email">
         <input type="text" class="email_input" placeholder="Email address">
-        <input type="text" class="email_input" placeholder="Label">
+        <input type="text" class="email_input" placeholder="Label (optional)">
       </div>
     </ng-template>
-    <ng-template>
-      <div class="input_fields_phone">
-        <input type="text" class="phone_input" placeholder="Phone number ">
-        <input type="text" class="phone_input" placeholder="Label">
+    <ng-template #phoneTemplate>
+      <div class="input_fields_email">
+        <input type="text" class="email_input" placeholder="Phone number ">
+        <input type="text" class="email_input" placeholder="Label (optional)">
       </div>
     </ng-template>
     <div class="button_container">
       <div class="save_primary">
-        <input type="checkbox">
-        <a class="text2">Save as primary email address.</a>
+        <input type="checkbox" class="big_checkbox">
+        <a class="text2">Save as primary contact method.</a>
       </div>
       <button class="save_button">Save</button>
     </div>

@@ -32,6 +32,7 @@ namespace DeliFHery.API.Database
             AddParameters(cmd, parameters);
 
             var results = new List<T>();
+
             await using var reader = await cmd.ExecuteReaderAsync(ct);
             while (await reader.ReadAsync(ct))
             {
@@ -40,7 +41,7 @@ namespace DeliFHery.API.Database
             return results;
         }
 
-        public async Task<int> ExecuteInsertAsync(
+        public async Task<int> ExecuteInsertIntAsync(
             string sql,
             CancellationToken ct = default,
             params QueryParameter[] parameters)
@@ -53,5 +54,24 @@ namespace DeliFHery.API.Database
             var obj = await cmd.ExecuteScalarAsync(ct);
             return Convert.ToInt32(obj);
         }
+
+        public async Task<Guid> ExecuteInsertGuidAsync(
+    string sql,
+    CancellationToken ct = default,
+    params QueryParameter[] parameters)
+        {
+            await using var conn = await _connectionFactory.CreateConnectionAsync(ct);
+            await using var cmd = conn.CreateCommand();
+            cmd.CommandText = sql;
+            AddParameters(cmd, parameters);
+
+            var obj = await cmd.ExecuteScalarAsync(ct);
+
+            if (obj == null || obj == DBNull.Value)
+                throw new InvalidOperationException("Insert did not return a GUID.");
+
+            return (Guid)obj;
+        }
+
     }
 }

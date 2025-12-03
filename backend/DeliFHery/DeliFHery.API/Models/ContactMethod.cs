@@ -3,7 +3,7 @@
     public class ContactMethod
     {
         public int contactId {  get; set; }
-        public int customerId { get; set; } = default!;
+        public Guid customerId { get; set; } = default!;
         public string type { get; set; } = default!;
         public string value { get; set; } = default!;
         public bool isVerified { get; set; }

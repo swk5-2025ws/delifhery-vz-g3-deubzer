@@ -11,10 +11,11 @@ BEGIN
 	EXEC('
 		USE [delifhery_db];
 		CREATE TABLE [dbo].[Customer](
-			[customer_id] [int] IDENTITY(1,1) PRIMARY KEY,
-			[identity_provider_user_id] [varchar](255) NOT NULL,
-			[username] [varchar](30) NOT NULL,
-			[created_at] [datetime] NOT NULL DEFAULT(GETDATE())
+			[customer_id] UNIQUEIDENTIFIER NOT NULL 
+				PRIMARY KEY DEFAULT NEWID(),
+			[identity_provider_user_id] VARCHAR(255) NOT NULL,
+			[username] VARCHAR(30) NOT NULL,
+			[created_at] DATETIME NOT NULL DEFAULT(GETDATE())
 		);
 	');
 	PRINT 'Table Customer created';
@@ -37,7 +38,7 @@ BEGIN
 		USE[delifhery_db];
 		CREATE TABLE [dbo].[ContactMethod](
 			[contact_id] [int] IDENTITY(1,1) PRIMARY KEY,
-			[customer_id] [int] NOT NULL,
+			[customer_id] UNIQUEIDENTIFIER  NOT NULL,
 			[type] [varchar](30) NOT NULL,
 			[value] [varchar](100) NOT NULL,
 			[is_verified] [bit] DEFAULT(0),
@@ -51,7 +52,7 @@ BEGIN
 		USE [delifhery_db];
 		CREATE TABLE [dbo].[Shipment](
 			[shipment_id] [int] IDENTITY(1,1) PRIMARY KEY,
-			[sender_customer_id] [int] NOT NULL,
+			[sender_customer_id] UNIQUEIDENTIFIER  NOT NULL,
 			[sender_address_id] [int] NOT NULL,
 			[recipient_address_id] [int] NOT NULL,
 			[tracking_number] [varchar](50) NOT NULL UNIQUE,
@@ -133,7 +134,7 @@ BEGIN
 		CREATE TABLE [dbo].[NotificationSubscription](
 			[notification_id] [int] IDENTITY(1,1) PRIMARY KEY,
 			[shipment_id] [int] NOT NULL,
-			[customer_id] [int] NOT NULL,
+			[customer_id] UNIQUEIDENTIFIER  NOT NULL,
 			[created_at] [datetime] NOT NULL DEFAULT GETDATE(),
 
 			CONSTRAINT FK_NotificationSubscription_Shipment FOREIGN KEY ([shipment_id]) REFERENCES [dbo].[Shipment]([shipment_id]) ON DELETE CASCADE,

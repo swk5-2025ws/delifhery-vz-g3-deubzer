@@ -26,7 +26,7 @@ namespace DeliFHery.API.Controllers
 
         // GET /api/customers/{id}
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id, CancellationToken ct = default)
+        public async Task<IActionResult> GetById(Guid id, CancellationToken ct = default)
         {
             var customer = await _customerRepo.GetByIdAsync(id, ct);
             if(customer == null)
@@ -36,9 +36,9 @@ namespace DeliFHery.API.Controllers
             return Ok(customer);
         }
 
-        // Post /api/customers/currentUser
+        // Post /api/customers
         [Authorize]
-        [HttpPost("currentUser")]
+        [HttpPost]
         public async Task<ActionResult<Customer>> EnsureCurrentCustomer(CancellationToken ct)
         {
             var sub =
@@ -78,8 +78,8 @@ namespace DeliFHery.API.Controllers
                 created_at = DateTime.UtcNow
             };
 
-            var newId = await _customerRepo.CreateAsync(newCustomer, ct);
-            newCustomer.customerId = newId;
+            await _customerRepo.CreateAsync(newCustomer, ct);
+            newCustomer.customerId = new Guid();
 
             return Ok(newCustomer);
         }

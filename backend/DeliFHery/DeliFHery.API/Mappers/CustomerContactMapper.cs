@@ -10,7 +10,7 @@ namespace DeliFHery.API.Mappers
             return new ContactMethod
             {
                 contactId = reader.GetInt32(reader.GetOrdinal("contact_id")),
-                customerId = reader.GetInt32(reader.GetOrdinal("customer_id")),
+                customerId = reader.GetGuid(reader.GetOrdinal("customer_id")),
                 type = reader.GetString(reader.GetOrdinal("type")),
                 value = reader.GetString(reader.GetOrdinal("value")),
                 isVerified = reader.GetBoolean(reader.GetOrdinal("is_verified"))

@@ -44,10 +44,15 @@ builder.Services.AddSingleton<IDbConnectionFactory>(c => new DbConnectionFactory
 builder.Services.AddSingleton<DatabaseService>();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 builder.Services.AddScoped<IContactMethodRepo, ContactMethodRepo>();
+builder.Services.AddOpenApiDocument(
+    settings => settings.Title = "DeliFHery API");
 
 var app = builder.Build();
 app.UseCors("AngularClient");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseOpenApi();
+app.UseSwaggerUi(settings => settings.Path = "/swagger");
+
 app.Run();

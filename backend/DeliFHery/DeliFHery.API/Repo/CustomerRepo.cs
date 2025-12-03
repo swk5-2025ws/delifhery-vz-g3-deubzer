@@ -17,13 +17,13 @@ namespace DeliFHery.API.Repo
         }
         
 
-        public Task<int> CreateAsync(Customer c, CancellationToken ct = default)
+        public Task<Guid> CreateAsync(Customer c, CancellationToken ct = default)
         {
             const string sql = @"
                 INSERT INTO dbo.Customer(identity_provider_user_id, username, created_at)
-                VALUES (@idp, @username, GETDATE());
-                SELECT SCOPE_IDENTITY();";
-            return _db.ExecuteInsertAsync(sql,ct,
+                OUTPUT INSERTED.customer_id 
+                VALUES (@idp, @username, GETDATE());";
+            return _db.ExecuteInsertGuidAsync(sql,ct,
                 new QueryParameter("@idp",c.identityProviderUserId),
                 new QueryParameter("@username",c.username   
                 ));
@@ -53,7 +53,7 @@ namespace DeliFHery.API.Repo
             return result.FirstOrDefault();
         }
 
-        public async Task<Customer?> GetByIdAsync(int id, CancellationToken ct = default)
+        public async Task<Customer?> GetByIdAsync(Guid id, CancellationToken ct = default)
         {
             const string sql = @"
                SELECT customer_id,
@@ -68,7 +68,7 @@ namespace DeliFHery.API.Repo
         }
 
 
-        public Task<bool> DeleteAsync(int id, CancellationToken ct = default)
+        public Task<bool> DeleteAsync(Guid id, CancellationToken ct = default)
         {
             throw new NotImplementedException();
         }
@@ -78,7 +78,7 @@ namespace DeliFHery.API.Repo
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateUsernameAsync(int id, string username, CancellationToken ct = default)
+        public Task<bool> UpdateUsernameAsync(Guid id, string username, CancellationToken ct = default)
         {
             throw new NotImplementedException();
         }

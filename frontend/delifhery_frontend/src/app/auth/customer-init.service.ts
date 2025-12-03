@@ -9,6 +9,6 @@ export class CustomerInitService {
   constructor(private http: HttpClient) {}
 
   ensureCurrentCustomer() {
-    return this.http.post(`${this.baseUrl}/currentUser`, {});
+    return this.http.post(`${this.baseUrl}`, {});
   }
 }
