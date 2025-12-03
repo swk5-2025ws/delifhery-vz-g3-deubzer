@@ -11,20 +11,11 @@ namespace DeliFHery.API.Controllers
 {
     
     [ApiController]
-    [Route("api/customers/[controller]")]
+    [Route("api/customers/{customerId}/[controller]")]
     public class ContactMethodController(IContactMethodRepo _repo, ICustomerRepo _customer_repo) : ControllerBase
     {
-        [HttpGet("{customerId}")]
-        public async Task<IActionResult> GetALl([FromRoute] Guid customerId, CancellationToken ct)
-        {
-            var contactMethod = await _repo.ListForCustomerAsync(customerId);
-            if (!contactMethod.Any())
-            {
-                return NotFound("Customer has no ContactMethod");
-            }
-            return Ok(contactMethod);
-        }
-        // GET /api/customers/currentUser/contactMethod/
+
+        // GET /api/customers/<customerId>/contactMethod
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllContactForCustomer(CancellationToken ct)

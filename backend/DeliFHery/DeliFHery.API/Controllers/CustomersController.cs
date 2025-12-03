@@ -1,4 +1,6 @@
-﻿using DeliFHery.API.Interfaces;
+﻿using DeliFHery.API.Dto;
+using DeliFHery.API.DtoMappers;
+using DeliFHery.API.Interfaces;
 using DeliFHery.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +14,7 @@ namespace DeliFHery.API.Controllers
     public class CustomersController(ICustomerRepo _customerRepo) : ControllerBase
     {
         
+
         // GET /api/customers
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken ct = default)
@@ -21,7 +24,8 @@ namespace DeliFHery.API.Controllers
             {
                 return NotFound();
             }
-            return Ok(customers);
+            var dtos = customers.Select(CustomerDtoMapper.ToDto);
+            return Ok(dtos);
         }
 
         // GET /api/customers/{id}
@@ -33,13 +37,13 @@ namespace DeliFHery.API.Controllers
             {
                 return NotFound();
             }
-            return Ok(customer);
+            return Ok(CustomerDtoMapper.ToDto(customer));
         }
 
         // Post /api/customers
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<Customer>> EnsureCurrentCustomer(CancellationToken ct)
+        public async Task<ActionResult<CustomerDto>> EnsureCurrentCustomer(CancellationToken ct)
         {
             var sub =
                 User.FindFirst("sub")?.Value ??
@@ -80,8 +84,9 @@ namespace DeliFHery.API.Controllers
 
             await _customerRepo.CreateAsync(newCustomer, ct);
             newCustomer.customerId = new Guid();
+            var dto = CustomerDtoMapper.ToDto(newCustomer);
+            return Ok(dto);
 
-            return Ok(newCustomer);
         }
     }
 }
