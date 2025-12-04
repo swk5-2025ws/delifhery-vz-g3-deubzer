@@ -41,8 +41,8 @@ namespace DeliFHery.API.Controllers
             }
             return Ok(contactMethods);
         }
-
-        // POST /api/customers/contactMethod
+         
+        // POST /api/customers/<customerId>/contactMethod
         [Authorize]
         [HttpPost]
         public async Task<ActionResult<ContactMethod>> CreateContactMethodForCurrentUser(
