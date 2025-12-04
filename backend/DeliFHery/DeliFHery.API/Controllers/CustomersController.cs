@@ -29,16 +29,29 @@ namespace DeliFHery.API.Controllers
         }
 
         // GET /api/customers/{id}
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id, CancellationToken ct = default)
         {
+            // Claims prüfen
+            var sub = User.FindFirst("sub")?.Value ??
+                      User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(sub))
+                return Unauthorized("No 'sub' in token");
+
             var customer = await _customerRepo.GetByIdAsync(id, ct);
-            if(customer == null)
-            {
+            if (customer == null)
                 return NotFound();
-            }
+
+            // Prüfen ob der User auf seinen eigenen Customer zugreift
+            var userCustomer = await _customerRepo.GetByIdentityProviderUserIdAsync(sub, ct);
+            if (userCustomer == null || userCustomer.customerId != id)
+                return Forbid(); // 403 - Zugriff verboten
+
             return Ok(CustomerDtoMapper.ToDto(customer));
         }
+
 
         // Post /api/customers
         [Authorize]

@@ -13,7 +13,7 @@ namespace DeliFHery.API.Mappers
                 customerId = reader.GetGuid(reader.GetOrdinal("customer_id")),
                 type = reader.GetString(reader.GetOrdinal("type")),
                 value = reader.GetString(reader.GetOrdinal("value")),
-                isVerified = reader.GetBoolean(reader.GetOrdinal("is_verified"))
+                isPrimary = reader.GetBoolean(reader.GetOrdinal("is_verified"))
             };
         }
     }

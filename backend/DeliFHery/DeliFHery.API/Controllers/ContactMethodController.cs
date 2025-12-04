@@ -67,7 +67,7 @@ namespace DeliFHery.API.Controllers
                 customerId = customer.customerId,
                 type = request.Type,
                 value = request.Value,
-                isVerified = false
+                isPrimary = request.IsPrimary,
             };
 
             var newId = await _repo.CreateAsync(contact, ct);

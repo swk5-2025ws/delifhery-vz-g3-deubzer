@@ -26,7 +26,7 @@ namespace DeliFHery.API.Repo
                   new QueryParameter("customerId", contactMethod.customerId),
                   new QueryParameter("type", contactMethod.type),
                   new QueryParameter("value", contactMethod.value),
-                  new QueryParameter("is_verified", contactMethod.isVerified));
+                  new QueryParameter("is_verified", contactMethod.isPrimary));
         }
 
         public Task<bool> DeleteAsync(int contactId, CancellationToken ct = default)

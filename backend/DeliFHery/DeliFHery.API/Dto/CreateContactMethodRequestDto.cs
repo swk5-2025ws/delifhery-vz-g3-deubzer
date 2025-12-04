@@ -4,5 +4,6 @@
     {
         public string Type { get; set; } = default!;
         public string Value { get; set; } = default!;
+        public bool IsPrimary { get; set; } = default!;
     }
 }
