@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using DeliFHery.API.Services.Pricing;
 
 var builder = WebApplication.CreateBuilder(args);
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -44,6 +45,13 @@ builder.Services.AddSingleton<IDbConnectionFactory>(c => new DbConnectionFactory
 builder.Services.AddSingleton<DatabaseService>();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 builder.Services.AddScoped<IContactMethodRepo, ContactMethodRepo>();
+
+builder.Services.AddScoped<IShippingPriceCalculator, ShippingPriceCalculator>();
+builder.Services.AddScoped<IShippingPriceRule, BasePriceRule>();
+builder.Services.AddScoped<IShippingPriceRule, StateSurChargeRule>();
+builder.Services.AddScoped<IShippingPriceRule, MonthDiscountRule>();
+builder.Services.AddSingleton<IRouteService, RouteService>();
+
 builder.Services.AddOpenApiDocument(
     settings => settings.Title = "DeliFHery API");
 

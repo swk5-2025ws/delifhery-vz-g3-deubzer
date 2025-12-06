@@ -139,6 +139,9 @@
   font-size: 1.1rem;
   border-radius: 10px;
 }
+.track_input:focus{
+  outline:none;
+}
 .text{
   font-family: Inter, sans-serif;
   font-size: 2rem;

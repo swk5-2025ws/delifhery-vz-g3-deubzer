@@ -24,6 +24,16 @@ namespace DeliFHery.API.Database
             }
         }
 
+        public async Task<int> ExecuteNonQueryAsync(string sql, CancellationToken ct = default, params QueryParameter[] parameters)
+        {
+            await using var conn = await _connectionFactory.CreateConnectionAsync(ct);
+            await using var cmd = conn.CreateCommand();
+            cmd.CommandText = sql;
+            AddParameters(cmd, parameters);
+            return await cmd.ExecuteNonQueryAsync(ct);
+
+        }
+
         public async Task<IEnumerable<T>> QueryAsync<T>(string sql, RowMapper<T> map, CancellationToken ct = default, params QueryParameter[] parameters)
         { 
             await using var conn = await _connectionFactory.CreateConnectionAsync(ct);
@@ -56,9 +66,9 @@ namespace DeliFHery.API.Database
         }
 
         public async Task<Guid> ExecuteInsertGuidAsync(
-    string sql,
-    CancellationToken ct = default,
-    params QueryParameter[] parameters)
+            string sql,
+            CancellationToken ct = default,
+            params QueryParameter[] parameters)
         {
             await using var conn = await _connectionFactory.CreateConnectionAsync(ct);
             await using var cmd = conn.CreateCommand();

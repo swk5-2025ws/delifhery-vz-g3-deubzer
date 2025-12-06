@@ -10,26 +10,33 @@ import {KeycloakService} from 'keycloak-angular';
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
-export class Header implements OnInit{
+export class Header implements OnInit {
   isLoggedIn = false;
   username: string | null = null;
-  constructor(private keycloak: KeycloakService) {}
+
+  constructor(private keycloak: KeycloakService, private router: Router) {
+  }
+
   async ngOnInit() {
     this.isLoggedIn = await this.keycloak.isLoggedIn();
-    if(this.isLoggedIn){
+    if (this.isLoggedIn) {
       const profile = await this.keycloak.loadUserProfile();
       this.username = profile.username || profile.firstName || null;
     }
   }
-  login(){
+
+  login() {
     this.keycloak.login();
   }
-  register(){
+
+  register() {
     this.keycloak.register();
   }
-  logout(){
-    this.keycloak.logout();
+
+  logout() {
+    this.keycloak.logout(window.location.origin + '/home');
   }
+
   getUsername(){
     return this.username;
   }

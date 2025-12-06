@@ -29,10 +29,18 @@ namespace DeliFHery.API.Repo
                   new QueryParameter("is_verified", contactMethod.isPrimary));
         }
 
-        public Task<bool> DeleteAsync(int contactId, CancellationToken ct = default)
+        public async Task<bool> DeleteAsync(Guid customerId, int contactId, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
-        }
+            const string sql = @"
+                            DELETE FROM [dbo].[ContactMethod] WHERE contact_id = @contactId 
+                            AND customer_id = @customer_id";
+
+            var result =  await _db.ExecuteNonQueryAsync(sql,ct,
+                new QueryParameter("@contactId", contactId),
+                new QueryParameter("@customer_id",customerId));
+
+            return result > 0;
+        } 
 
         public async Task<IEnumerable<ContactMethod>> ListForCustomerAsync(Guid customerId, CancellationToken ct = default)
         {
@@ -40,7 +48,8 @@ namespace DeliFHery.API.Repo
                             SELECT contact_id,
                             customer_id,
                             type,
-                            value
+                            value,
+                            is_verified
                             FROM [dbo].[ContactMethod]
                             WHERE customer_id = @id";
             return await _db.QueryAsync(sql, _mapper.MapContactMethod, ct,
