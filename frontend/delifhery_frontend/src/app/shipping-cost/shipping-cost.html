@@ -1,49 +1,183 @@
 <div class="shipping_cost_wrapper">
-  <div class="shipping_cost_container">
-      <a class="text1">Calculate the Shipping Costs</a>
-    <div class="shipping_cost_info_container">
-      <div class="shipping_cost_info">
-      <a class="text2">From</a>
-        <div class="input_container">
-          <input class="shipping_input" placeholder="postal code...">
-          <input class="shipping_input" placeholder="city...">
-          <input class="shipping_input" placeholder="address...">
-          <input class="shipping_input" placeholder="hNr...">
+  <form
+    class="shipping_cost_wrapper"
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="shipping_cost_container">
+      <h2 class="text1">Calculate the Shipping Costs</h2>
+
+      <div class="shipping_cost_info_container">
+        <div class="shipping_cost_info">
+          <div class="text2">From</div>
+          <div class="input_container">
+            <input
+              class="shipping_input"
+              placeholder="postal code..."
+              formControlName="senderPostalCode"
+            />
+            <input
+              class="shipping_input"
+              placeholder="city..."
+              formControlName="senderCity"
+            />
+            <input
+              class="shipping_input"
+              placeholder="address..."
+              formControlName="senderStreet"
+            />
+            <input
+              class="shipping_input"
+              placeholder="hNr..."
+              formControlName="senderHouseNumber"
+            />
+          </div>
+
+          @if (isInvalid('senderPostalCode')) {
+            <div class="field-error">
+              Please enter a valid sender postal code.
+            </div>
+          }
+        </div>
+
+        <div class="shipping_cost_info">
+          <div class="text2">To</div>
+          <div class="input_container">
+            <input
+              class="shipping_input"
+              placeholder="postal code..."
+              formControlName="recipientPostalCode"
+            />
+            <input
+              class="shipping_input"
+              placeholder="city..."
+              formControlName="recipientCity"
+            />
+            <input
+              class="shipping_input"
+              placeholder="address..."
+              formControlName="recipientStreet"
+            />
+            <input
+              class="shipping_input"
+              placeholder="hNr..."
+              formControlName="recipientHouseNumber"
+            />
+          </div>
+
+          @if (isInvalid("recipientPostalCode")) {
+            <div class="field-error">
+              Please enter a valid recipient postal code.
+            </div>
+          }
         </div>
       </div>
-      <div class="shipping_cost_info">
-        <a class="text2">To</a>
-        <div class="input_container">
-          <input class="shipping_input" placeholder="postal code...">
-          <input class="shipping_input" placeholder="city...">
-          <input class="shipping_input" placeholder="address...">
-          <input class="shipping_input" placeholder="hNr...">
+
+      <div class="text1 secondText1">Box Size</div>
+
+      <div class="shipping_cost_weight_container">
+        <div class="shipping_cost_weight">
+          <div class="width">
+            <span class="text3">Width:</span>
+            <input
+              type="number"
+              class="shipping_input"
+              placeholder="cm..."
+              formControlName="widthCm"
+            />
+            @if (isInvalid("widthCm")) {
+              <div class="field-error">Width must be at least 1 cm.</div>
+            }
+          </div>
+
+          <div class="height">
+            <span class="text3">Height:</span>
+            <input
+              type="number"
+              class="shipping_input"
+              placeholder="cm..."
+              formControlName="heightCm"
+            />
+            @if (isInvalid("heightCm")) {
+              <div class="field-error">Height must be at least 1 cm.</div>
+            }
+          </div>
+
+          <div class="weight">
+            <span class="text3">Length:</span>
+            <input
+              type="number"
+              class="shipping_input"
+              placeholder="cm..."
+              formControlName="lengthCm"
+            />
+            @if (isInvalid("lengthCm")) {
+              <div class="field-error">Length must be at least 1 cm.</div>
+            }
+          </div>
+
+          <div class="weight">
+            <span class="text3">Weight:</span>
+            <input
+              type="number"
+              class="shipping_input"
+              placeholder="kg..."
+              formControlName="weightKg"
+            />
+            @if (isInvalid("weightKg")) {
+              <div class="field-error">Weight must be at least 0.1 kg.</div>
+            }
+          </div>
+        </div>
+
+        <div class="shipping_cost_button">
+          <button
+            class="shipping_button"
+            type="submit"
+            [disabled]="form.invalid || isLoading"
+          >
+            @if (!isLoading) {
+              Calculate
+            } @else {
+              Calculating…
+            }
+          </button>
         </div>
       </div>
+
+      @if (isInvalid("form") && !isLoading) {
+        <div class="error">
+          Please fill in all required fields with valid values.
+        </div>
+      }
+
+      @if (errorMessage) {
+        <div class="error">
+          {{ errorMessage }}
+        </div>
+      }
+
+      @if (result) {
+        <div class="result">
+          <h3>Price</h3>
+          <p class="result-main">
+            {{ result.totalPrice | number: '1.2-2' }}
+            {{ result.currency }}
+          </p>
+
+          <div class="result-details">
+            <p>Base price: {{ result.basePrice | number: '1.2-2' }} €</p>
+            <p>
+              Bundesland surcharge:
+              {{ result.bundeslandSurcharge | number: '1.2-2' }} €
+            </p>
+            <p>
+              Seasonal discount:
+              -{{ result.seasonalDiscount | number: '1.2-2' }} €
+            </p>
+          </div>
+        </div>
+      }
     </div>
-    <a class="text1 secondText1">Box Size</a>
-    <div class="shipping_cost_weight_container">
-      <div class="shipping_cost_weight">
-        <div class="width">
-          <a class="text3">Width:</a>
-          <input type="number" class="shipping_input" placeholder="cm...">
-        </div>
-        <div class="height">
-          <a class="text3">Height:</a>
-          <input type="number" class="shipping_input" placeholder="cm...">
-        </div>
-        <div class="weight">
-          <a class="text3">Length:</a>
-          <input type="number" class="shipping_input" placeholder="cmd...">
-        </div>
-        <div class="weight">
-          <a class="text3">Weight:</a>
-          <input type="number" class="shipping_input" placeholder="kg...">
-        </div>
-      </div>
-      <div class="shipping_cost_button">
-        <button class="shipping_button">Calculate</button>
-      </div>
-    </div>
-  </div>
+  </form>
 </div>

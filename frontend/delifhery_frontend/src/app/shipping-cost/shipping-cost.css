@@ -120,4 +120,79 @@
   font-weight: bold;
 }
 
+.field-error,
+.error {
+  margin-top: 0.35rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: #c53030;
+}
+
+.error {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.shipping_input.ng-invalid.ng-touched {
+  border: 1px solid #e53e3e;
+  background-color: #ffecec;
+}
+
+.result {
+  margin-top: 2rem;
+  padding: 1.25rem 1.5rem;
+  width: 100%;
+  max-width: 420px;
+
+  background-color: rgba(22, 67, 117, 0.06);
+  border-radius: 16px;
+  border: 1px solid rgba(22, 67, 117, 0.18);
+}
+
+.result-main {
+  margin: 0.25rem 0 0.75rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #164375;
+}
+
+.result-details p {
+  margin: 0.15rem 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+}
+
+.shipping_button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.shipping_button[disabled]:hover {
+  transform: none;
+}
+
+@media (max-width: 900px) {
+  .shipping_cost_container {
+    width: 90%;
+    height: auto;
+  }
+
+  .input_container {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .shipping_input {
+    width: 100%;
+  }
+
+  .shipping_cost_weight_container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+
 
