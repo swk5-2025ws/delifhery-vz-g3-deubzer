@@ -26,7 +26,6 @@ BEGIN
 			[address_id] [int] IDENTITY(1,1) PRIMARY KEY,
 			[name] [varchar](100) NOT NULL,
 			[street] [varchar](100) NOT NULL,
-			[house_number] [varchar](10) NOT NULL,
 			[postal_code] [varchar](20) NOT NULL,
 			[city] [varchar](50) NOT NULL 
 		);

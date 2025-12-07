@@ -64,7 +64,6 @@ namespace DeliFHery.API.Services
                 street = request.SenderStreet,
                 city = request.SenderCity,
                 postalCode = request.SenderPostalCode,
-                houseNumber = request.SenderHouseNumber,
             };
 
             var recipientAddress = new Address 
@@ -73,7 +72,6 @@ namespace DeliFHery.API.Services
                 street = request.RecipientStreet,
                 city = request.RecipientCity,
                 postalCode = request.RecipientPostalCode,
-                houseNumber = request.RecipientHouseNumber,
             };
 
             var senderAddressId = await _addressRepo.CreateAsync(senderAddress,ct);
@@ -85,11 +83,9 @@ namespace DeliFHery.API.Services
                     SenderPostalCode = request.SenderPostalCode,
                     SenderCity = request.SenderCity,
                     SenderStreet = request.SenderStreet,
-                    SenderHouseNumber = request.SenderHouseNumber,
                     RecipientPostalCode = request.RecipientPostalCode,
                     RecipientCity = request.RecipientCity,
                     RecipientStreet = request.RecipientStreet,
-                    RecipientHouseNumber = request.RecipientHouseNumber,
                     WidthCm = request.WidthCm,
                     HeightCm = request.HeightCm,
                     LengthCm = request.LengthCm,
@@ -130,7 +126,6 @@ namespace DeliFHery.API.Services
                 trackingNumber,
                 request.RecipientName,
                 request.RecipientStreet,
-                request.RecipientHouseNumber,
                 request.RecipientPostalCode,
                 request.RecipientCity,
                 ct);
@@ -138,11 +133,14 @@ namespace DeliFHery.API.Services
 
             return new CreateShipmentResponseDto
             {
-                TrackingNumber = trackingNumber,
-                Price = totalPrice,
-                Currency = priceResult.Currency,
-                PaymentUrl = paymentResult.redirectUrl,
-                LabelImage = labelBase
+                trackingNumber = trackingNumber,
+                price = totalPrice,
+                currency = priceResult.Currency,
+                paymentUrl = paymentResult.redirectUrl,
+                labelImage = labelBase,
+                basePrice = priceResult.BasePrice,
+                bundeslandSurcharge = priceResult.BundeslandSurcharge,
+                seasonalDiscount = priceResult.SeasonalDiscount,
             };
         }
     }

@@ -6,13 +6,11 @@
         public string SenderPostalCode { get; set; } = default!;
         public string SenderCity { get; set; } = default!;
         public string SenderStreet { get; set; } = default!;
-        public string SenderHouseNumber { get; set; } = default!;
 
         //To
         public string RecipientPostalCode { get; set; } = default!;
         public string RecipientCity { get; set; } = default!;
         public string RecipientStreet { get; set;} = default!;
-        public string RecipientHouseNumber { get; set; } = default!;
 
         //Package
 

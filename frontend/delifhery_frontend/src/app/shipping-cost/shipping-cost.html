@@ -5,32 +5,53 @@
     (ngSubmit)="onSubmit()"
   >
     <div class="shipping_cost_container">
-      <h2 class="text1">Calculate the Shipping Costs</h2>
-
+      <h2 class="text1">Calculate Shipping Costs</h2>
       <div class="shipping_cost_info_container">
         <div class="shipping_cost_info">
-          <div class="text2">From</div>
-          <div class="input_container">
-            <input
-              class="shipping_input"
-              placeholder="postal code..."
-              formControlName="senderPostalCode"
-            />
-            <input
-              class="shipping_input"
-              placeholder="city..."
-              formControlName="senderCity"
-            />
-            <input
-              class="shipping_input"
-              placeholder="address..."
-              formControlName="senderStreet"
-            />
-            <input
-              class="shipping_input"
-              placeholder="hNr..."
-              formControlName="senderHouseNumber"
-            />
+          <div class="text2">Sender</div>
+
+          <div class="input_container_column">
+            <div class="field-group">
+              <label class="text3" for="senderName">Name*</label>
+              <input
+                id="senderName"
+                class="shipping_input"
+                placeholder="e.g. Max Mustermann"
+                formControlName="senderName"
+              />
+            </div>
+
+            <div class="field-group">
+              <label class="text3" for="senderStreet">Street &amp; House Number*</label>
+              <input
+                id="senderStreet"
+                class="shipping_input"
+                placeholder="e.g. Margit utca 15"
+                formControlName="senderStreet"
+              />
+            </div>
+
+            <div class="field-row">
+              <div class="field-group">
+                <label class="text3" for="senderPostalCode">ZIP Code*</label>
+                <input
+                  id="senderPostalCode"
+                  class="shipping_input"
+                  placeholder="e.g. 1023"
+                  formControlName="senderPostalCode"
+                />
+              </div>
+
+              <div class="field-group">
+                <label class="text3" for="senderCity">City*</label>
+                <input
+                  id="senderCity"
+                  class="shipping_input"
+                  placeholder="e.g. Budapest"
+                  formControlName="senderCity"
+                />
+              </div>
+            </div>
           </div>
 
           @if (isInvalid('senderPostalCode')) {
@@ -41,28 +62,50 @@
         </div>
 
         <div class="shipping_cost_info">
-          <div class="text2">To</div>
-          <div class="input_container">
-            <input
-              class="shipping_input"
-              placeholder="postal code..."
-              formControlName="recipientPostalCode"
-            />
-            <input
-              class="shipping_input"
-              placeholder="city..."
-              formControlName="recipientCity"
-            />
-            <input
-              class="shipping_input"
-              placeholder="address..."
-              formControlName="recipientStreet"
-            />
-            <input
-              class="shipping_input"
-              placeholder="hNr..."
-              formControlName="recipientHouseNumber"
-            />
+          <div class="text2">Recipient</div>
+
+          <div class="input_container_column">
+            <div class="field-group">
+              <label class="text3" for="recipientName">Name*</label>
+              <input
+                id="recipientName"
+                class="shipping_input"
+                placeholder="e.g. John Doe"
+                formControlName="recipientName"
+              />
+            </div>
+
+            <div class="field-group">
+              <label class="text3" for="recipientStreet">Street &amp; House Number*</label>
+              <input
+                id="recipientStreet"
+                class="shipping_input"
+                placeholder="e.g. Muhar utca 28"
+                formControlName="recipientStreet"
+              />
+            </div>
+
+            <div class="field-row">
+              <div class="field-group">
+                <label class="text3" for="recipientPostalCode">ZIP Code*</label>
+                <input
+                  id="recipientPostalCode"
+                  class="shipping_input"
+                  placeholder="e.g. 1028"
+                  formControlName="recipientPostalCode"
+                />
+              </div>
+
+              <div class="field-group">
+                <label class="text3" for="recipientCity">City*</label>
+                <input
+                  id="recipientCity"
+                  class="shipping_input"
+                  placeholder="e.g. Budapest"
+                  formControlName="recipientCity"
+                />
+              </div>
+            </div>
           </div>
 
           @if (isInvalid("recipientPostalCode")) {
@@ -78,11 +121,24 @@
       <div class="shipping_cost_weight_container">
         <div class="shipping_cost_weight">
           <div class="width">
-            <span class="text3">Width:</span>
+            <span class="text3">Length (cm)*</span>
             <input
               type="number"
               class="shipping_input"
-              placeholder="cm..."
+              placeholder="e.g. 32"
+              formControlName="lengthCm"
+            />
+            @if (isInvalid("lengthCm")) {
+              <div class="field-error">Length must be at least 1 cm.</div>
+            }
+          </div>
+
+          <div class="height">
+            <span class="text3">Width (cm)*</span>
+            <input
+              type="number"
+              class="shipping_input"
+              placeholder="e.g. 20"
               formControlName="widthCm"
             />
             @if (isInvalid("widthCm")) {
@@ -90,12 +146,12 @@
             }
           </div>
 
-          <div class="height">
-            <span class="text3">Height:</span>
+          <div class="weight">
+            <span class="text3">Height (cm)*</span>
             <input
               type="number"
               class="shipping_input"
-              placeholder="cm..."
+              placeholder="e.g. 14"
               formControlName="heightCm"
             />
             @if (isInvalid("heightCm")) {
@@ -104,24 +160,11 @@
           </div>
 
           <div class="weight">
-            <span class="text3">Length:</span>
+            <span class="text3">Weight (kg)*</span>
             <input
               type="number"
               class="shipping_input"
-              placeholder="cm..."
-              formControlName="lengthCm"
-            />
-            @if (isInvalid("lengthCm")) {
-              <div class="field-error">Length must be at least 1 cm.</div>
-            }
-          </div>
-
-          <div class="weight">
-            <span class="text3">Weight:</span>
-            <input
-              type="number"
-              class="shipping_input"
-              placeholder="kg..."
+              placeholder="e.g. 1.2"
               formControlName="weightKg"
             />
             @if (isInvalid("weightKg")) {
@@ -160,8 +203,7 @@
       @if (result) {
         <div class="result">
           <p class="result-main">
-            {{ result.totalPrice | number: '1.2-2' }}
-            {{ result.currency }}
+            {{ result.totalPrice | number: '1.2-2' }} {{ result.currency }}
           </p>
 
           <div class="result-details">

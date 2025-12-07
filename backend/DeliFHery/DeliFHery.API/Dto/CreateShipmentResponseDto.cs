@@ -2,11 +2,13 @@
 {
     public class CreateShipmentResponseDto
     {
-        public string TrackingNumber { get; set; } = default!;
-        public decimal Price { get; set; }
-        public string Currency { get; set; } = "EUR";
-        public string PaymentUrl { get; set; } = default!;
-        public string? LabelImage { get; set; }
-
+        public string trackingNumber { get; set; } = default!;
+        public decimal price { get; set; }
+        public string currency { get; set; } = "EUR";
+        public string paymentUrl { get; set; } = default!;
+        public string? labelImage { get; set; }
+        public decimal basePrice { get; set; }
+        public decimal bundeslandSurcharge { get; set; }
+        public decimal seasonalDiscount { get; set; }
     }
 }

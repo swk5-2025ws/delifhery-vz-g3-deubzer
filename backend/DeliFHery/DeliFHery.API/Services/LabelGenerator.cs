@@ -5,12 +5,12 @@ namespace DeliFHery.API.Services
 {
     public class LabelGenerator : ILabelGenerator
     {
-        public Task<string> GenerateLabelAsync(string trackingNumber, string recipientName, string recipientStreet, string recipientHouseNumber, string recipientPostalCode, string recipientCity, CancellationToken ct)
+        public Task<string> GenerateLabelAsync(string trackingNumber, string recipientName, string recipientStreet, string recipientPostalCode, string recipientCity, CancellationToken ct)
         {
             var labelText =
                 $"TRACKING: {trackingNumber}\n" +
                 $"TO: {recipientName}\n" +
-                $"{recipientStreet} {recipientHouseNumber}\n" +
+                $"{recipientStreet}\n" +
                 $"{recipientPostalCode} {recipientCity}";
 
             var bytes = Encoding.UTF8.GetBytes(labelText);

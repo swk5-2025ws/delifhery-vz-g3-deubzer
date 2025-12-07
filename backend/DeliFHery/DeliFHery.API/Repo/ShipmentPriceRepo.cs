@@ -27,7 +27,8 @@ namespace DeliFHery.API.Repo
                     @amount,
                     @currency,
                     @calculated_at
-                );";
+                );
+                SELECT SCOPE_IDENTITY();";
             return await _db.ExecuteInsertIntAsync(sql, ct,
                     new QueryParameter("shipment_id", price.shipmentId),
                     new QueryParameter("amount",price.amount),

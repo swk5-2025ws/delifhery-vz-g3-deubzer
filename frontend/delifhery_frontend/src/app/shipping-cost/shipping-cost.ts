@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ShippingCostService, ShippingPriceResponse} from '../../services/shipping-cost.service';
 
 @Component({
@@ -24,22 +24,15 @@ export class ShippingCost {
       senderPostalCode: ['', [Validators.required, Validators.minLength(4)]],
       senderCity: ['', Validators.required],
       senderStreet: ['', Validators.required],
-      senderHouseNumber: ['', Validators.required],
-
       recipientPostalCode: ['', [Validators.required, Validators.minLength(4)]],
       recipientCity: ['', Validators.required],
       recipientStreet: ['', Validators.required],
-      recipientHouseNumber: ['', Validators.required],
 
       widthCm: [null as number | null, [Validators.required, Validators.min(1)]],
       heightCm: [null as number | null, [Validators.required, Validators.min(1)]],
       lengthCm: [null as number | null, [Validators.required, Validators.min(1)]],
       weightKg: [null as number | null, [Validators.required, Validators.min(0.1)]],
     });
-  }
-
-  get f() {
-    return this.form.controls;
   }
 
   isInvalid(controlName: string): boolean {

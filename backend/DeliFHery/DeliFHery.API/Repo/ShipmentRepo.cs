@@ -22,7 +22,8 @@ namespace DeliFHery.API.Repo
                         INSERT INTO [dbo].[Shipment](sender_customer_id, sender_address_id, recipient_address_id, tracking_number, weight_kg, 
                         height_cm,width_cm, length_cm,current_status, created_at)
                         VALUES (@sender_customer_id, @sender_address_id, @recipient_address_id, @tracking_number, @weight_kg,
-                        @height_cm, @width_cm, @length_cm, @current_status, @created_at)";
+                        @height_cm, @width_cm, @length_cm, @current_status, @created_at);
+                        SELECT SCOPE_IDENTITY();";
             return await _db.ExecuteInsertIntAsync(sql, ct,
                 new QueryParameter("sender_customer_id", shipment.senderCustomerId),
                 new QueryParameter("sender_address_id", shipment.senderAddressId),

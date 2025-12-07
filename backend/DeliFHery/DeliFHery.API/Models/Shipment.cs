@@ -9,10 +9,10 @@ namespace DeliFHery.API.Models
         public int senderAddressId { get; set; }
         public int recipientAddressId { get; set; }
         public string trackingNumber { get; set; } = default!;
-        public float weightKg{ get; set; }
-        public float heightCm { get; set; }
-        public float widthCm { get; set; }
-        public float lengthCm { get; set; }
+        public double weightKg{ get; set; }
+        public double heightCm { get; set; }
+        public double widthCm { get; set; }
+        public double lengthCm { get; set; }
         public string currentStatus { get; set; } = default!;
         public DateTime createdAt { get; set; }
     }

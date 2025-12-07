@@ -18,22 +18,20 @@ namespace DeliFHery.API.Repo
                 INSERT INTO [dbo].[Address](
                     name,
                     street,
-                    house_number,
                     postal_code,
                     city
                 )
                 VALUES (
                     @name,
                     @street,
-                    @house_number,
                     @postal_code,
                     @city
-                );";
+                );
+                SELECT SCOPE_IDENTITY();";
 
             return await _db.ExecuteInsertIntAsync(sql, ct,
                 new QueryParameter("name", address.name),
                 new QueryParameter("street", address.street),
-                new QueryParameter("house_number", address.houseNumber),
                 new QueryParameter("postal_code", address.postalCode),
                 new QueryParameter("city", address.city));
         }
