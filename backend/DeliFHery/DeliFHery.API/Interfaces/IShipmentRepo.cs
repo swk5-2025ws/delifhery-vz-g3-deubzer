@@ -2,7 +2,7 @@
 
 namespace DeliFHery.API.Interfaces
 {
-    public interface IShipmentPriceRepo
+    public interface IShipmentRepo
     {
         public Task<int> CreateAsync(Shipment shipment, CancellationToken ct);
         public Task<Shipment?> GetShipmentByTrackingNumber(string trackingNumber, CancellationToken ct);

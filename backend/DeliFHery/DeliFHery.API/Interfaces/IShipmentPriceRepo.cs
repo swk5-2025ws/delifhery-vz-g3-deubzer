@@ -1,6 +1,9 @@
-﻿namespace DeliFHery.API.Interfaces
+﻿using DeliFHery.API.Models;
+
+namespace DeliFHery.API.Interfaces
 {
-    public class IShipmentPriceRepo
+    public interface IShipmentPriceRepo
     {
+        Task<int> CreateAsync (ShipmentPrice price, CancellationToken ct);
     }
 }

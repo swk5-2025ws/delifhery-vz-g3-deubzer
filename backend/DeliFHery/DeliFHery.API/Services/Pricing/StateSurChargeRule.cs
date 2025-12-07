@@ -1,4 +1,6 @@
-﻿namespace DeliFHery.API.Services.Pricing
+﻿using DeliFHery.API.Interfaces;
+
+namespace DeliFHery.API.Services.Pricing
 {
     public class StateSurChargeRule : IShippingPriceRule
     {

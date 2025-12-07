@@ -95,8 +95,8 @@ namespace DeliFHery.API.Controllers
                 created_at = DateTime.UtcNow
             };
 
-            await _customerRepo.CreateAsync(newCustomer, ct);
-            newCustomer.customerId = new Guid();
+            var newid = await _customerRepo.CreateAsync(newCustomer, ct);
+            newCustomer.customerId = newid;
             var dto = CustomerDtoMapper.ToDto(newCustomer);
             return Ok(dto);
 

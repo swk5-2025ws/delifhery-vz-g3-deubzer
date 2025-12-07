@@ -1,5 +1,5 @@
 ﻿using DeliFHery.API.Dto;
-using DeliFHery.API.Services.Pricing;
+using DeliFHery.API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

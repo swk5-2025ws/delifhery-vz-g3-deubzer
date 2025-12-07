@@ -1,12 +1,13 @@
 ﻿using DeliFHery.API.Database; 
 using DeliFHery.API.Interfaces;
 using DeliFHery.API.Repo;
-
-using System.IdentityModel.Tokens.Jwt;
-using System.IdentityModel.Tokens;
+using DeliFHery.API.Services;
+using DeliFHery.API.Services.Payment;
+using DeliFHery.API.Services.Pricing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using DeliFHery.API.Services.Pricing;
+using System.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -45,12 +46,17 @@ builder.Services.AddSingleton<IDbConnectionFactory>(c => new DbConnectionFactory
 builder.Services.AddSingleton<DatabaseService>();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 builder.Services.AddScoped<IContactMethodRepo, ContactMethodRepo>();
-
 builder.Services.AddScoped<IShippingPriceCalculator, ShippingPriceCalculator>();
 builder.Services.AddScoped<IShippingPriceRule, BasePriceRule>();
 builder.Services.AddScoped<IShippingPriceRule, StateSurChargeRule>();
 builder.Services.AddScoped<IShippingPriceRule, MonthDiscountRule>();
 builder.Services.AddSingleton<IRouteService, RouteService>();
+builder.Services.AddScoped<IShipmentRepo, ShipmentRepo>();
+builder.Services.AddScoped<IShipmentPriceRepo, ShipmentPriceRepo>();
+builder.Services.AddScoped<IAddressRepo, AddressRepo>();
+builder.Services.AddScoped<IShipmentService, ShipmentService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<ILabelGenerator, LabelGenerator>();
 
 builder.Services.AddOpenApiDocument(
     settings => settings.Title = "DeliFHery API");

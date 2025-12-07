@@ -1,6 +1,6 @@
 ﻿using DeliFHery.API.Dto;
 
-namespace DeliFHery.API.Services.Pricing
+namespace DeliFHery.API.Interfaces
 {
     public interface IShippingPriceCalculator
     {

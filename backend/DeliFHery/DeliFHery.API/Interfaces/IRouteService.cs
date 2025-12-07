@@ -1,4 +1,4 @@
-﻿namespace DeliFHery.API.Services.Pricing
+﻿namespace DeliFHery.API.Interfaces
 {
     public interface IRouteService
     {

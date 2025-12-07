@@ -5,7 +5,7 @@ using DeliFHery.API.Models;
 
 namespace DeliFHery.API.Repo
 {
-    public class ShipmentRepo : IShipmentPriceRepo
+    public class ShipmentRepo : IShipmentRepo
     {
         private readonly Database.DatabaseService _db;
         private readonly ShipmentMapper _shipmentMapper;
