@@ -17,13 +17,13 @@ namespace DeliFHery.API.Repo
         }
         
 
-        public Task<Guid> CreateAsync(Customer c, CancellationToken ct = default)
+        public async Task<Guid> CreateAsync(Customer c, CancellationToken ct = default)
         {
             const string sql = @"
                 INSERT INTO dbo.Customer(identity_provider_user_id, username, created_at)
                 OUTPUT INSERTED.customer_id 
                 VALUES (@idp, @username, GETDATE());";
-            return _db.ExecuteInsertGuidAsync(sql,ct,
+            return await _db.ExecuteInsertGuidAsync(sql,ct,
                 new QueryParameter("@idp",c.identityProviderUserId),
                 new QueryParameter("@username",c.username   
                 ));

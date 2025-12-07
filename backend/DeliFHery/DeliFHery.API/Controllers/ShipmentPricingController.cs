@@ -19,8 +19,8 @@ namespace DeliFHery.API.Controllers
 
         [HttpPost("calculate")]
         [AllowAnonymous]
-        public async Task<ActionResult<CalculateShipmentPriceResponse>> Calculate(
-            [FromBody] CalculateShipmentPriceRequest request)
+        public async Task<ActionResult<CalculateShipmentPriceResponseDto>> Calculate(
+            [FromBody] CalculateShipmentPriceRequestDto request)
         {
             try
             {

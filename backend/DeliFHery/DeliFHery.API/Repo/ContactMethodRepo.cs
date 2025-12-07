@@ -16,13 +16,13 @@ namespace DeliFHery.API.Repo
             _mapper = new CustomerContactMapper();
         }
 
-        public Task<int> CreateAsync(ContactMethod contactMethod, CancellationToken ct = default)
+        public async Task<int> CreateAsync(ContactMethod contactMethod, CancellationToken ct = default)
         {
             const string sql = @"
                             INSERT INTO dbo.ContactMethod(customer_id, type, value, is_verified)
                             VALUES (@customerId, @type , @value, @is_verified);
                             SELECT SCOPE_IDENTITY();";
-            return _db.ExecuteInsertIntAsync(sql, ct,
+            return await _db.ExecuteInsertIntAsync(sql, ct,
                   new QueryParameter("customerId", contactMethod.customerId),
                   new QueryParameter("type", contactMethod.type),
                   new QueryParameter("value", contactMethod.value),

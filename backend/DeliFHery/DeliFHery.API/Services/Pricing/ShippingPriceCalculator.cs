@@ -11,7 +11,7 @@ namespace DeliFHery.API.Services.Pricing
         { 
             _rules = rules;
         }
-        public async Task<CalculateShipmentPriceResponse> CalculatePriceAsync(CalculateShipmentPriceRequest request)
+        public async Task<CalculateShipmentPriceResponseDto> CalculatePriceAsync(CalculateShipmentPriceRequestDto request)
         {
             var context = new ShipmentPriceContext(request);
 
@@ -39,7 +39,7 @@ namespace DeliFHery.API.Services.Pricing
                 }
             }
 
-            return new CalculateShipmentPriceResponse
+            return new CalculateShipmentPriceResponseDto
             {
                 TotalPrice = price,
                 BasePrice = basePrice,

@@ -1,6 +1,6 @@
 ﻿namespace DeliFHery.API.Dto
 {
-    public class CalculateShipmentPriceRequest
+    public class CalculateShipmentPriceRequestDto
     {
         //From
         public string SenderPostalCode { get; set; } = default!;

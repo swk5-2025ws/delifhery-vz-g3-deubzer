@@ -4,6 +4,6 @@ namespace DeliFHery.API.Services.Pricing
 {
     public interface IShippingPriceCalculator
     {
-        Task<CalculateShipmentPriceResponse> CalculatePriceAsync(CalculateShipmentPriceRequest request);
+        Task<CalculateShipmentPriceResponseDto> CalculatePriceAsync(CalculateShipmentPriceRequestDto request);
     }
 }

@@ -4,7 +4,7 @@ namespace DeliFHery.API.Models
 {
     public class Shipment
     {
-        public int shipmentid { get; set; }
+        public int shipmentId { get; set; }
         public Guid senderCustomerId { get; set; }
         public int senderAddressId { get; set; }
         public int recipientAddressId { get; set; }

@@ -159,21 +159,20 @@
 
       @if (result) {
         <div class="result">
-          <h3>Price</h3>
           <p class="result-main">
             {{ result.totalPrice | number: '1.2-2' }}
             {{ result.currency }}
           </p>
 
           <div class="result-details">
-            <p>Base price: {{ result.basePrice | number: '1.2-2' }} €</p>
+            <p>Base price: <a>{{ result.basePrice | number: '1.2-2' }} €</a></p>
             <p>
               Bundesland surcharge:
-              {{ result.bundeslandSurcharge | number: '1.2-2' }} €
+              <a>{{ result.bundeslandSurcharge | number: '1.2-2' }} €</a>
             </p>
             <p>
               Seasonal discount:
-              -{{ result.seasonalDiscount | number: '1.2-2' }} €
+              <a>-{{ result.seasonalDiscount | number: '1.2-2' }} €</a>
             </p>
           </div>
         </div>
