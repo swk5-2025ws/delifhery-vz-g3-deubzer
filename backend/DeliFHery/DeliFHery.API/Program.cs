@@ -57,7 +57,8 @@ builder.Services.AddScoped<IAddressRepo, AddressRepo>();
 builder.Services.AddScoped<IShipmentService, ShipmentService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<ILabelGenerator, LabelGenerator>();
-builder.Services.AddScoped<IPaymentRepo, PaymentRepo>();
+builder.Services.AddScoped<IPaymentRepo, PaymentRepo>(); 
+builder.Services.AddScoped<ITrackingEventRepo, TrackingEventRepo>();
 
 builder.Services.Configure<PaymentOptions>(
     builder.Configuration.GetSection("Payment"));

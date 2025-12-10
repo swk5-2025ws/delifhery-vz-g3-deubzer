@@ -1,6 +1,10 @@
-﻿namespace DeliFHery.API.Interfaces
+﻿using DeliFHery.API.Models;
+
+namespace DeliFHery.API.Interfaces
 {
-    public interface TrackingEventRepo
+    public interface ITrackingEventRepo
     {
+        public Task<int> CreateAsync(TrackingEvent trackingEvent, CancellationToken ct);
+        public Task<TrackingEvent?> GetByIdAsync(int id, CancellationToken ct);
     }
 }
