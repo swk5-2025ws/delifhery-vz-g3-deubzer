@@ -38,12 +38,23 @@ namespace DeliFHery.API.Repo
 
         }
 
+        public async Task<Shipment?> GetByIdAsync(int shipmentId, CancellationToken ct)
+        {
+            const string sql = @"
+                        SELECT * 
+                        FROM [dbo].[Shipment]
+                        WHERE shipment_id = @shipmentId;";
+            var result = await _db.QueryAsync(sql, _shipmentMapper.MapShipment, ct,
+                new QueryParameter("shipmentId", shipmentId));
+            return result.FirstOrDefault();
+        }
+
         public async Task<Shipment?> GetShipmentByTrackingNumber(string trackingNumber, CancellationToken ct)
         {
             const string sql = @"
                              SELECT * 
                              FROM dbo.Shipment
-                             WHERE tracking_number = @tracking_number";
+                             WHERE tracking_number = @tracking_number;";
             var result = await _db.QueryAsync(sql, _shipmentMapper.MapShipment, ct,
                 new QueryParameter("tracking_number", trackingNumber));
             return result.FirstOrDefault();

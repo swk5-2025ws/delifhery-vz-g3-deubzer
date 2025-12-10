@@ -11,17 +11,26 @@ namespace DeliFHery.API.Services.PaymentNamespace
         private readonly HttpClient _httpClient;
         private readonly PaymentOptions _options;
         private readonly IPaymentRepo _paymentRepo;
+        private readonly IShipmentRepo _shipmentRepo;
+        private readonly IAddressRepo _addressRepo;
+        private readonly ILabelGenerator _labelGenerator;
 
 
         public PaymentService(
             HttpClient httpClient,
             Microsoft.Extensions.Options.IOptions<PaymentOptions> options,
-            IPaymentRepo paymentRepo
+            IPaymentRepo paymentRepo,
+            IShipmentRepo shipmentRepo,
+            IAddressRepo addressRepo,
+            ILabelGenerator labelGenerator
             )
         {
             _httpClient = httpClient;
             _options = options.Value;
             _paymentRepo = paymentRepo;
+            _shipmentRepo = shipmentRepo;
+            _addressRepo = addressRepo;
+            _labelGenerator = labelGenerator;
         }
 
 
@@ -83,5 +92,43 @@ namespace DeliFHery.API.Services.PaymentNamespace
             };
 
         }  
+        
+        public async Task<PaymentSummaryDto?> GetPaymentSummaryAsync(string externalPaymentId, CancellationToken ct)
+        {
+            var payment = await _paymentRepo.GetByExternalIdAsync(externalPaymentId, ct);
+            if(payment == null)
+            {
+                return null;
+            }
+            var shipment = await _shipmentRepo.GetByIdAsync(payment.shipmentId, ct);
+
+            if(shipment == null)
+            {
+                return null;
+            }
+
+            var recipientAddress = await _addressRepo.GetAddressByIdAsync(shipment.recipientAddressId,ct );
+
+            if (recipientAddress == null) 
+            {
+                return null;
+            }
+
+            var label = await _labelGenerator.GenerateLabelAsync(shipment.trackingNumber, recipientAddress.name, recipientAddress.street, recipientAddress.postalCode, recipientAddress.city, ct);
+
+            return new PaymentSummaryDto
+            {
+                paymentId = externalPaymentId,
+                status = payment.status ?? "Unknown",
+                amount = (decimal)(payment.amount ?? 0),
+                currency = payment.currency ?? "EUR",
+                trackingNumber = shipment.trackingNumber,
+                recipientName = recipientAddress.name,
+                recipientStreet = recipientAddress.street,
+                recipientPostalCode = recipientAddress.postalCode,
+                recipientCity = recipientAddress.city,
+                labelImage = label
+            };
+        }
     }
 }
