@@ -15,7 +15,6 @@
       </div>
     }
     @else if (summary) {
-      <!-- Status -->
       @if (summary.status === 'Completed') {
         <div class="pc-status pc-status--success">
           <span class="pc-icon">✅</span>
@@ -38,21 +37,16 @@
         </div>
       }
 
-      <!-- "Számla" / Rechnungs-Infos -->
       <section class="pc-section">
-        <h2>Invoice</h2>
+        <h2>Invoice Details</h2>
         <div class="pc-row">
-          <span>Amount:</span>
+          <span>Amount Paid:</span>
           <strong>{{ summary.amount | number:'1.2-2' }} {{ summary.currency }}</strong>
         </div>
-        <div class="pc-row">
-          <span>Recipient:</span>
-          <span>
-            {{ summary.recipientName }},
-            {{ summary.recipientStreet }},
-            {{ summary.recipientPostalCode }} {{ summary.recipientCity }}
-          </span>
-        </div>
+      </section>
+
+      <section class="pc-section">
+        <h2>Shipping Information</h2>
         <div class="pc-row">
           <span>Tracking code:</span>
           <span>
@@ -62,9 +56,16 @@
             </button>
           </span>
         </div>
+        <div class="pc-row">
+          <span>Recipient:</span>
+          <span style="text-align: right;">
+            {{ summary.recipientName }}<br>
+            {{ summary.recipientStreet }}<br>
+            {{ summary.recipientPostalCode }} {{ summary.recipientCity }}
+          </span>
+        </div>
       </section>
 
-      <!-- Label / Etikett anzeigen -->
       <section class="pc-section">
         <h2>Shipping Label</h2>
         @if (labelDataUrl) {
@@ -75,11 +76,11 @@
           />
           <div class="pc-row pc-row--right">
             <a
-              class="pc-button pc-button--secondary"
+              class="pc-button pc-button--primary"
               [href]="labelDataUrl"
               download="shipping-label.png"
             >
-              Download label
+              Download Label
             </a>
           </div>
         } @else {
