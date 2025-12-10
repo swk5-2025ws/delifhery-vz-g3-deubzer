@@ -33,7 +33,6 @@ namespace DeliFHery.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id, CancellationToken ct = default)
         {
-            // Claims prüfen
             var sub = User.FindFirst("sub")?.Value ??
                       User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -44,7 +43,6 @@ namespace DeliFHery.API.Controllers
             if (customer == null)
                 return NotFound();
 
-            // Prüfen ob der User auf seinen eigenen Customer zugreift
             var userCustomer = await _customerRepo.GetByIdentityProviderUserIdAsync(sub, ct);
             if (userCustomer == null || userCustomer.customerId != id)
                 return Forbid(); // 403 - Zugriff verboten

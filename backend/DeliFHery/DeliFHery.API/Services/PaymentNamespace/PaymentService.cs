@@ -14,6 +14,7 @@ namespace DeliFHery.API.Services.PaymentNamespace
         private readonly IShipmentRepo _shipmentRepo;
         private readonly IAddressRepo _addressRepo;
         private readonly ILabelGenerator _labelGenerator;
+        private readonly ICustomerRepo _customerRepo;
 
 
         public PaymentService(
@@ -22,7 +23,8 @@ namespace DeliFHery.API.Services.PaymentNamespace
             IPaymentRepo paymentRepo,
             IShipmentRepo shipmentRepo,
             IAddressRepo addressRepo,
-            ILabelGenerator labelGenerator
+            ILabelGenerator labelGenerator,
+            ICustomerRepo customerRepo
             )
         {
             _httpClient = httpClient;
@@ -31,6 +33,7 @@ namespace DeliFHery.API.Services.PaymentNamespace
             _shipmentRepo = shipmentRepo;
             _addressRepo = addressRepo;
             _labelGenerator = labelGenerator;
+            _customerRepo = customerRepo;
         }
 
 
@@ -93,8 +96,15 @@ namespace DeliFHery.API.Services.PaymentNamespace
 
         }  
         
-        public async Task<PaymentSummaryDto?> GetPaymentSummaryAsync(string externalPaymentId, CancellationToken ct)
+        public async Task<PaymentSummaryDto?> GetPaymentSummaryForCustomerAsync(string externalPaymentId,Guid customerId, CancellationToken ct)
         {
+
+            var customer = await _customerRepo.GetByIdAsync(customerId,ct);
+            if (customer == null)
+            {
+                return null;
+            }
+
             var payment = await _paymentRepo.GetByExternalIdAsync(externalPaymentId, ct);
             if(payment == null)
             {
@@ -129,6 +139,25 @@ namespace DeliFHery.API.Services.PaymentNamespace
                 recipientCity = recipientAddress.city,
                 labelImage = label
             };
+        }
+
+        public async Task HandleCallbackAsync(PaymentCallbackDto dto, CancellationToken ct)
+        {
+            if (!string.Equals(dto.apiKey, _options.ApiKey, StringComparison.Ordinal))
+            {
+                throw new UnauthorizedAccessException("Invalid API key in payment callback.");
+            }
+                
+            var payment = await _paymentRepo.GetByExternalIdAsync(dto.paymentId, ct);
+            if (payment == null)
+            {
+                return;
+            }
+                
+            payment.status = dto.status;
+            payment.completedAt = DateTime.UtcNow;
+
+            var result = await _paymentRepo.UpdateStatusAsync(payment, ct);
         }
     }
 }

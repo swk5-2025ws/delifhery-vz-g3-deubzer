@@ -1,0 +1,91 @@
+<div class="pc-wrapper">
+  <div class="pc-card">
+    <h1 class="pc-title">Payment & Shipment Summary</h1>
+
+    @if (isLoading) {
+      <p>Loading payment details…</p>
+    }
+    @else if (errorMessage) {
+      <div class="pc-status pc-status--error">
+        <span class="pc-icon">⚠️</span>
+        <div>
+          <div class="pc-status-title">Error</div>
+          <div class="pc-status-subtitle">{{ errorMessage }}</div>
+        </div>
+      </div>
+    }
+    @else if (summary) {
+      <!-- Status -->
+      @if (summary.status === 'Completed') {
+        <div class="pc-status pc-status--success">
+          <span class="pc-icon">✅</span>
+          <div>
+            <div class="pc-status-title">Payment completed</div>
+            <div class="pc-status-subtitle">
+              Payment ID: <strong>{{ summary.paymentId }}</strong>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <div class="pc-status pc-status--warning">
+          <span class="pc-icon">⚠️</span>
+          <div>
+            <div class="pc-status-title">Payment status: {{ summary.status }}</div>
+            <div class="pc-status-subtitle">
+              Payment ID: <strong>{{ summary.paymentId }}</strong>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- "Számla" / Rechnungs-Infos -->
+      <section class="pc-section">
+        <h2>Invoice</h2>
+        <div class="pc-row">
+          <span>Amount:</span>
+          <strong>{{ summary.amount | number:'1.2-2' }} {{ summary.currency }}</strong>
+        </div>
+        <div class="pc-row">
+          <span>Recipient:</span>
+          <span>
+            {{ summary.recipientName }},
+            {{ summary.recipientStreet }},
+            {{ summary.recipientPostalCode }} {{ summary.recipientCity }}
+          </span>
+        </div>
+        <div class="pc-row">
+          <span>Tracking code:</span>
+          <span>
+            <strong>{{ summary.trackingNumber }}</strong>
+            <button type="button" class="pc-link" (click)="copyTracking()">
+              Copy code
+            </button>
+          </span>
+        </div>
+      </section>
+
+      <!-- Label / Etikett anzeigen -->
+      <section class="pc-section">
+        <h2>Shipping Label</h2>
+        @if (labelDataUrl) {
+          <img
+            [src]="labelDataUrl"
+            alt="Shipping label"
+            class="pc-label-image"
+          />
+          <div class="pc-row pc-row--right">
+            <a
+              class="pc-button pc-button--secondary"
+              [href]="labelDataUrl"
+              download="shipping-label.png"
+            >
+              Download label
+            </a>
+          </div>
+        } @else {
+          <p>No label image available.</p>
+        }
+      </section>
+    }
+  </div>
+</div>

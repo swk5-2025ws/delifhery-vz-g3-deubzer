@@ -38,8 +38,8 @@ export const routes: Routes = [
     component: CreateShipment
   },
   {
-    path: 'payment-complete?',
-    component: PaymentComplete
+    path: 'payment-complete',
+    loadComponent: () => import('./payment-complete/payment-complete'). then(m => m.PaymentComplete),
   }
 
 ];

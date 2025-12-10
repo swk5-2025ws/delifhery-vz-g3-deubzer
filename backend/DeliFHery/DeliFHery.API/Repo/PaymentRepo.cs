@@ -1,4 +1,5 @@
 ﻿using DeliFHery.API.Database;
+using DeliFHery.API.DBMappers;
 using DeliFHery.API.Interfaces;
 using DeliFHery.API.Models;
 
@@ -7,10 +8,12 @@ namespace DeliFHery.API.Repo
     public class PaymentRepo : IPaymentRepo
     {
         private readonly DatabaseService _db;
+        private readonly PaymentMapper _mapper;
 
         public PaymentRepo(DatabaseService db)
         {
             _db = db;
+            _mapper = new PaymentMapper();
         }
         public async Task<int> CreateAsync(Payment payment, CancellationToken ct)
         {
@@ -51,9 +54,15 @@ namespace DeliFHery.API.Repo
                 new QueryParameter("completedAt",payment.completedAt));
         }
 
-        public Task<Payment?> GetByExternalIdAsync(string externalId, CancellationToken ct)
+        public async Task<Payment?> GetByExternalIdAsync(string externalId, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            const string sql = @"
+                        SELECT * 
+                        FROM [dbo].[Payment]
+                        WHERE external_payment_id = @externalPaymentId;";
+            var result = await _db.QueryAsync(sql, _mapper.MapPayment, ct,
+                new QueryParameter("externalPaymentId", externalId));
+            return result.FirstOrDefault();
         }
 
         public Task<Payment?> GetByIdAsync(int paymentId, CancellationToken ct)
@@ -61,9 +70,27 @@ namespace DeliFHery.API.Repo
             throw new NotImplementedException();
         }
 
-        public Task UpdateStatusAsync(int paymentId, string status, DateTime? completedAt, CancellationToken ct)
+        public async Task<bool> UpdateStatusAsync(Payment payment, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            const string sql = @"UPDATE [dbo].[Payment]
+                                    SET
+                                        amount = @amount,
+                                        currency = @currency,
+                                        status = @status,
+                                        callback_url = @callback_url,
+                                        redirect_url = @redirect_url,
+                                        completed_at = @completed_at
+                                    WHERE payment_id = @payment_id";
+            var result = await _db.ExecuteNonQueryAsync(sql, ct,
+                new QueryParameter("amount", payment.amount),
+                new QueryParameter("currency", payment.currency),
+                new QueryParameter("status", payment.status),
+                new QueryParameter("callback_url", payment.callBackUrl),
+                new QueryParameter("redirect_url", payment.redirectUrl),
+                new QueryParameter("completed_at", payment.completedAt),
+                new QueryParameter("payment_id", payment.paymentId));
+            return result > 0;
+
         }
     }
 }

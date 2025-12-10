@@ -10,6 +10,7 @@ namespace DeliFHery.API.Interfaces
     public interface IPaymentService
     {
         Task<PaymentStartResult> StartPaymentAsync(int shipmentId, decimal amount, string currency, CancellationToken ct);
-        Task<PaymentSummaryDto?> GetPaymentSummaryAsync(string externalPaymentId, CancellationToken ct);
+        Task<PaymentSummaryDto?> GetPaymentSummaryForCustomerAsync(string externalPaymentId,Guid customerID, CancellationToken ct);
+        Task HandleCallbackAsync(PaymentCallbackDto dto, CancellationToken ct);
     }
 }
