@@ -9,11 +9,13 @@ namespace DeliFHery.API.Repo
     {
         private readonly Database.DatabaseService _db;
         private readonly ShipmentMapper _shipmentMapper;
+        private readonly IAddressRepo _addressRepo;
 
-        public ShipmentRepo(Database.DatabaseService db)
+        public ShipmentRepo(Database.DatabaseService db, IAddressRepo addressRepo)
         {
             _db = db;
             _shipmentMapper = new ShipmentMapper();
+            _addressRepo = addressRepo;
         }
 
         public async Task<int> CreateAsync(Shipment shipment, CancellationToken ct)
@@ -52,13 +54,30 @@ namespace DeliFHery.API.Repo
         public async Task<Shipment?> GetShipmentByTrackingNumber(string trackingNumber, CancellationToken ct)
         {
             const string sql = @"
-                             SELECT * 
-                             FROM dbo.Shipment
-                             WHERE tracking_number = @tracking_number;";
+                        SELECT *
+                        FROM [dbo].[Shipment]
+                        WHERE tracking_number = @tracking_number;";
             var result = await _db.QueryAsync(sql, _shipmentMapper.MapShipment, ct,
                 new QueryParameter("tracking_number", trackingNumber));
             return result.FirstOrDefault();
         }
+
+        public async Task<Shipment?> GetShipmentByTrackingNumberAndPostalCode(string postalCode,string trackingNumber, CancellationToken ct)
+        {
+            const string sql = @"
+                             SELECT s.* 
+                             FROM dbo.Shipment s
+                             INNER JOIN [dbo].[Address] recipientAddr ON s.recipient_address_id = recipientAddr.address_id
+                             WHERE s.tracking_number = @tracking_number
+                             AND recipientAddr.postal_code = @postal_code;";
+            var result = await _db.QueryAsync(sql, _shipmentMapper.MapShipment, ct,
+                new QueryParameter("tracking_number", trackingNumber),
+                new QueryParameter("postal_code", postalCode));
+
+            return result.SingleOrDefault();        
+        }
+
+       
 
         public async Task<IEnumerable<Shipment>> GetShipmentsForCustomer(Guid customerId, CancellationToken ct)
         {

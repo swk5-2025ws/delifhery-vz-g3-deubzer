@@ -43,15 +43,14 @@ namespace DeliFHery.API.Repo
                 new QueryParameter("occurred_at", trackingEvent.occurredAt));
         }
 
-        public async Task<TrackingEvent?> GetByIdAsync(int id, CancellationToken ct = default)
+        public async Task<IEnumerable<TrackingEvent>> GetByShipmentIdAsync(int id, CancellationToken ct = default)
         {
             const string sql = @"
                         SELECT * 
                         FROM [dbo].[TrackingEvent]
-                        WHERE tracking_event_id = @id;";
-            var result = await _db.QueryAsync(sql, _mapper.MapTrackingEvent, ct,
+                        WHERE shipment_id = @id;";
+            return await _db.QueryAsync(sql, _mapper.MapTrackingEvent, ct,
                 new QueryParameter("id", id));
-            return result.FirstOrDefault();
         }
     }
 }

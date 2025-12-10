@@ -40,7 +40,7 @@ namespace DeliFHery.API.Controllers
         [HttpGet("tracking/{trackingNumber}")]
         public async Task<ActionResult<Shipment?>> GetByTrackingNumber([FromRoute] string trackingNumber, CancellationToken ct)
         {
-            var result = await _shipmentRepo.GetShipmentByTrackingNumber(trackingNumber, ct);
+            var result = await _shipmentRepo.GetShipmentByTrackingNumber(trackingNumber.Trim(), ct);
             if(result == null)
             {
                 return NotFound("Shipment does not exist");
