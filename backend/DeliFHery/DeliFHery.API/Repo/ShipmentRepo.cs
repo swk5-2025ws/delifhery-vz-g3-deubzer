@@ -69,5 +69,17 @@ namespace DeliFHery.API.Repo
             return await _db.QueryAsync(sql, _shipmentMapper.MapShipment, ct,
                   new QueryParameter("id", customerId));
         }
+
+        public async Task UpdateStatusAsync(int shipmentId, string newStatus, CancellationToken ct)
+        {
+            const string sql = @"
+                        UPDATE [dbo].[Shipment]
+                        SET current_status = @current_status
+                        WHERE shipment_id = @shipment_id;";
+
+            await _db.ExecuteNonQueryAsync(sql, ct,
+                new QueryParameter("current_status", newStatus),
+                new QueryParameter("shipment_id", shipmentId));
+        }
     }
 }

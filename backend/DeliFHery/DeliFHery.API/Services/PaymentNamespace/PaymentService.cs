@@ -157,7 +157,14 @@ namespace DeliFHery.API.Services.PaymentNamespace
             payment.status = dto.status;
             payment.completedAt = DateTime.UtcNow;
 
-            var result = await _paymentRepo.UpdateStatusAsync(payment, ct);
+            await _paymentRepo.UpdateStatusAsync(payment, ct);
+
+            if (string.Equals(dto.status, "Success", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(dto.status, "Completed", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(dto.status, "Paid", StringComparison.OrdinalIgnoreCase))
+            {
+                await _shipmentRepo.UpdateStatusAsync(payment.shipmentId, "Payment completed", ct);
+            }
         }
     }
 }

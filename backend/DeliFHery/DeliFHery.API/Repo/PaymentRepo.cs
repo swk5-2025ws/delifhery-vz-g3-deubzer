@@ -70,7 +70,7 @@ namespace DeliFHery.API.Repo
             throw new NotImplementedException();
         }
 
-        public async Task<bool> UpdateStatusAsync(Payment payment, CancellationToken ct)
+        public async Task UpdateStatusAsync(Payment payment, CancellationToken ct)
         {
             const string sql = @"UPDATE [dbo].[Payment]
                                     SET
@@ -81,7 +81,7 @@ namespace DeliFHery.API.Repo
                                         redirect_url = @redirect_url,
                                         completed_at = @completed_at
                                     WHERE payment_id = @payment_id";
-            var result = await _db.ExecuteNonQueryAsync(sql, ct,
+            await _db.ExecuteNonQueryAsync(sql, ct,
                 new QueryParameter("amount", payment.amount),
                 new QueryParameter("currency", payment.currency),
                 new QueryParameter("status", payment.status),
@@ -89,7 +89,7 @@ namespace DeliFHery.API.Repo
                 new QueryParameter("redirect_url", payment.redirectUrl),
                 new QueryParameter("completed_at", payment.completedAt),
                 new QueryParameter("payment_id", payment.paymentId));
-            return result > 0;
+            
 
         }
     }

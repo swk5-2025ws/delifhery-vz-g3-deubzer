@@ -1,0 +1,57 @@
+﻿using DeliFHery.API.Database;
+using DeliFHery.API.DBMappers;
+using DeliFHery.API.Interfaces;
+using DeliFHery.API.Models;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+
+namespace DeliFHery.API.Repo
+{
+    public class TrackingEventRepo : ITrackingEventRepo
+    {
+
+        private readonly DatabaseService _db;
+        private readonly TrackingEventMapper _mapper;
+
+        public TrackingEventRepo(DatabaseService db)
+        {
+            _db = db;
+            _mapper = new TrackingEventMapper();
+        }
+        public async Task<int> CreateAsync(TrackingEvent trackingEvent, CancellationToken ct = default)
+        {
+            const string sql = @"
+                            INSERT INTO (
+                                shipment_id,
+                                status,
+                                location,
+                                note,
+                                occurred_at
+                            )
+                            VALUES (
+                                @shipment_id,
+                                @status,
+                                @location,
+                                @note,
+                                @occurred_at
+                            );
+                            SELECT SCOPE_IDENTITY();";
+            return await _db.ExecuteInsertIntAsync(sql, ct,
+                new QueryParameter("shipment_id", trackingEvent.shipmentId),
+                new QueryParameter("status", trackingEvent.status),
+                new QueryParameter("locatoin", trackingEvent.location),
+                new QueryParameter("note", trackingEvent.note),
+                new QueryParameter("occurred_at", trackingEvent.occurredAt));
+        }
+
+        public async Task<TrackingEvent?> GetByIdAsync(int id, CancellationToken ct = default)
+        {
+            const string sql = @"
+                        SELECT * 
+                        FROM [dbo].[TrackingEvent]
+                        WHERE tracking_event_id = @id;";
+            var result = await _db.QueryAsync(sql, _mapper.MapTrackingEvent, ct,
+                new QueryParameter("id", id));
+            return result.FirstOrDefault();
+        }
+    }
+}
