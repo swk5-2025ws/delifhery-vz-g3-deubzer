@@ -177,26 +177,14 @@ form.shipping_cost_wrapper {
   font-weight: 600;
   letter-spacing: 0.01em;
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
+  transition: transform 0.12s ease;
 }
 
 .shipping_button:hover {
-  transform: translateY(-1px) scale(1.01);
-  box-shadow: 0 8px 16px rgba(219, 76, 61, 0.35);
+  transform: scale(1.01);
   background-color: #c34134;
 }
 
-.shipping_button[disabled] {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.shipping_button[disabled]:hover {
-  transform: none;
-  box-shadow: none;
-}
 
 .field-error,
 .error {

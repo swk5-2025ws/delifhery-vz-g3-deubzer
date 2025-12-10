@@ -1,4 +1,5 @@
 ﻿using DeliFHery.API.Database;
+using DeliFHery.API.DBMappers;
 using DeliFHery.API.Interfaces;
 using DeliFHery.API.Models;
 
@@ -7,10 +8,12 @@ namespace DeliFHery.API.Repo
     public class AddressRepo : IAddressRepo
     {
         private readonly Database.DatabaseService _db;
+        private readonly AddressMapper _mapper;
 
         public AddressRepo(Database.DatabaseService db)
         {
             _db = db;
+            _mapper = new AddressMapper();
         }
         public async Task<int> CreateAsync(Address address, CancellationToken ct = default)
         {
@@ -41,9 +44,16 @@ namespace DeliFHery.API.Repo
             throw new NotImplementedException();
         }
 
-        public Task<Address?> GetAddressByIdAsync(int id, CancellationToken ct = default)
+        public async Task<Address?> GetAddressByIdAsync(int id, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            const string sql = @"
+                            SELECT address_id, name, street, postal_code, city
+                            FROM [dbo].[Address]
+                            WHERE address_id = @id;";
+
+            var result = await _db.QueryAsync(sql, _mapper.MapAddress, ct,
+                new QueryParameter("id",id));
+            return result.FirstOrDefault();
         }
 
         public Task<bool> UpdateAsync(Address address, CancellationToken ct = default)

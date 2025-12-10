@@ -11,7 +11,7 @@ import {ShipmentRequest, ShipmentResponse, ShipmentService} from '../../services
     CommonModule,
   ],
   templateUrl: './create-shipment.html',
-  styleUrl: './create-shipment.css',
+  styleUrls: ['./create-shipment.css'],
 })
 export class CreateShipment {
   form: FormGroup;
@@ -21,7 +21,7 @@ export class CreateShipment {
 
   constructor(
     private fb: FormBuilder,
-    private shipmentService: ShipmentService
+    private shipmentService: ShipmentService,
   ) {
     this.form = this.fb.group({
       senderName: ['', Validators.required],
@@ -61,12 +61,10 @@ export class CreateShipment {
       SenderStreet: value.senderStreet,
       SenderPostalCode: value.senderPostalCode,
       SenderCity: value.senderCity,
-
       RecipientName: value.recipientName,
       RecipientStreet: value.recipientStreet,
       RecipientPostalCode: value.recipientPostalCode,
       RecipientCity: value.recipientCity,
-
       LengthCm: value.lengthCm,
       WidthCm: value.widthCm,
       HeightCm: value.heightCm,
@@ -104,5 +102,4 @@ export class CreateShipment {
     const c = this.form.get(controlName);
     return !!(c && c.invalid && (c.touched || c.dirty));
   }
-
 }

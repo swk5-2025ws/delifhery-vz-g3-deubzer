@@ -5,6 +5,7 @@ import {TrackingDetails} from './tracking-details/tracking-details';
 import {ShippingCost} from './shipping-cost/shipping-cost';
 import {MyContact} from './my-contact/my-contact';
 import {CreateShipment} from './create-shipment/create-shipment';
+import {PaymentComplete} from './payment-complete/payment-complete';
 
 export const routes: Routes = [
   {
@@ -35,6 +36,10 @@ export const routes: Routes = [
   {
     path: 'shipments',
     component: CreateShipment
+  },
+  {
+    path: 'payment-complete?',
+    component: PaymentComplete
   }
 
 ];

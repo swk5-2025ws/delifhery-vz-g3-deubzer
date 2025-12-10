@@ -6,11 +6,12 @@ import {Footer} from './shared/footer/footer';
 import {Tracking} from './tracking/tracking';
 import {TrackingDetails} from './tracking-details/tracking-details';
 import {ShippingCost} from './shipping-cost/shipping-cost';
+import {CreateShipment} from './create-shipment/create-shipment';
 
 @Component({
   selector: 'app-root',
   standalone:true,
-  imports: [RouterOutlet, Home, Header, Footer, Tracking, ShippingCost, TrackingDetails],
+  imports: [RouterOutlet, Home, Header, Footer, Tracking, ShippingCost, TrackingDetails, CreateShipment],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

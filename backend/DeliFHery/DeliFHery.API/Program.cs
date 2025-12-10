@@ -2,7 +2,7 @@
 using DeliFHery.API.Interfaces;
 using DeliFHery.API.Repo;
 using DeliFHery.API.Services;
-using DeliFHery.API.Services.Payment;
+using DeliFHery.API.Services.PaymentNamespace;
 using DeliFHery.API.Services.Pricing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -57,6 +57,12 @@ builder.Services.AddScoped<IAddressRepo, AddressRepo>();
 builder.Services.AddScoped<IShipmentService, ShipmentService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<ILabelGenerator, LabelGenerator>();
+builder.Services.AddScoped<IPaymentRepo, PaymentRepo>();
+
+builder.Services.Configure<PaymentOptions>(
+    builder.Configuration.GetSection("Payment"));
+
+builder.Services.AddHttpClient<IPaymentService, PaymentService>();
 
 builder.Services.AddOpenApiDocument(
     settings => settings.Title = "DeliFHery API");

@@ -37,6 +37,17 @@ namespace DeliFHery.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("tracking/{trackingNumber}")]
+        public async Task<ActionResult<Shipment?>> GetByTrackingNumber([FromRoute] string trackingNumber, CancellationToken ct)
+        {
+            var result = await _shipmentRepo.GetShipmentByTrackingNumber(trackingNumber, ct);
+            if(result == null)
+            {
+                return NotFound("Shipment does not exist");
+            }
+            return Ok(result);
+        }
+
 
         [Authorize]
         [HttpPost]
