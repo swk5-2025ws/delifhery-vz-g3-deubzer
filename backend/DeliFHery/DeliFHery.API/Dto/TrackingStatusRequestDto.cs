@@ -20,4 +20,11 @@
         public string Recipient { get; set; } = default!;
         public List<TrackingStatusEventDto> History { get; set; } = new();
     }
+    public class TrackingStatusUpdateDto
+    {
+        public string TrackingNumber { get; set; } = default!;
+        public string Status { get; set; } = default!;
+        public string? Zusatzinformation { get; set; }
+        public string? Note { get; set; }
+    }
 }

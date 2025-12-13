@@ -141,5 +141,12 @@ BEGIN
 		);
 	');
 	PRINT 'Table NotificationSubscription created';
-
 END
+
+USE [delifhery_db];
+
+	INSERT INTO [dbo].[Carrier] (api_key, name, is_active)
+	VALUES
+	('DHL-API-001',  'DHL', 1),
+	('POST-AT-001', 'PostAT', 1),
+	('GLS-API-001', 'GLS', 0);

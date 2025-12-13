@@ -20,7 +20,7 @@ namespace DeliFHery.API.Repo
         public async Task<int> CreateAsync(TrackingEvent trackingEvent, CancellationToken ct = default)
         {
             const string sql = @"
-                            INSERT INTO (
+                            INSERT INTO [dbo].[TrackingEvent] (
                                 shipment_id,
                                 status,
                                 location,
@@ -38,7 +38,7 @@ namespace DeliFHery.API.Repo
             return await _db.ExecuteInsertIntAsync(sql, ct,
                 new QueryParameter("shipment_id", trackingEvent.shipmentId),
                 new QueryParameter("status", trackingEvent.status),
-                new QueryParameter("locatoin", trackingEvent.location),
+                new QueryParameter("location", trackingEvent.location),
                 new QueryParameter("note", trackingEvent.note),
                 new QueryParameter("occurred_at", trackingEvent.occurredAt));
         }
