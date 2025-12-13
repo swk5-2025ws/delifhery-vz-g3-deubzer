@@ -22,7 +22,7 @@ export const routes: Routes = [
     component: Tracking
   },
   {
-    path: 'tracking/:trackingId',
+    path: 'tracking/:postalCode',
     component: TrackingDetails
   },
   {
@@ -40,6 +40,11 @@ export const routes: Routes = [
   {
     path: 'payment-complete',
     loadComponent: () => import('./payment-complete/payment-complete'). then(m => m.PaymentComplete),
+  },
+  {
+    path:'**',
+    redirectTo: 'home'
   }
+
 
 ];

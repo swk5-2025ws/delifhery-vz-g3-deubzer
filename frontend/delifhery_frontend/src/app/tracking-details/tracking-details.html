@@ -1,28 +1,104 @@
-<div class="tracking_detail_container">
-  <div class="tracking_content_wrapper">
-    <div class="content_container">
-      <div class="tracking_from_container">
-        <a class="text1">From</a>
-        <div class="tracking_from_info">
-          <input type="text" disabled="disabled" class="from_text">
-        </div>
+<div class="tracking-page font-inter">
+  @if (loading) {
+    <div class="state state-loading">
+      <span class="spinner"></span>
+      <div>
+        <div class="state-title">Loading…</div>
+        <div class="state-text">Fetching tracking events.</div>
       </div>
-      <div class="tracking_info">
+    </div>
+  } @else if (error) {
+    <div class="state state-error">
+      <div class="state-title">Could not load tracking</div>
+      <div class="state-text">{{ error }}</div>
+    </div>
+  } @else {
+    <div class="grid">
+      <section class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Status history</div>
+            <div class="card-subtitle">Latest updates are shown at the top</div>
+          </div>
 
-      </div>
-      <div class="tracking_to_container">
-        <a class="text1">To</a>
-        <div class="tracking_from_info">
-          <input type="text" disabled="disabled" class="to_text">
+          @if (data) {
+            <div class="badge">
+              <span class="badge-k">Tracking</span>
+              <span class="badge-v">{{ data.trackingNumber }}</span>
+            </div>
+          }
         </div>
-      </div>
+
+        @if (!data || !data.history?.length) {
+          <div class="empty">
+            <div class="empty-title">No tracking events yet</div>
+            <div class="empty-text">Check again later or verify tracking number and postal code.</div>
+          </div>
+        } @else {
+          <div class="timeline">
+            @for (h of data.history; track $index) {
+              <div class="event">
+                <div class="rail">
+                  <div class="dot"></div>
+                  <div class="line"></div>
+                </div>
+
+                <div class="event-card">
+                  <div class="event-top">
+                    <div class="event-status">
+                      {{ h.status }}
+                      @if (h.location) {
+                        <span class="event-location">• {{ h.location }}</span>
+                      }
+                    </div>
+
+                    <div class="event-date">
+                      {{ h.occurredAt ? (h.occurredAt | date:'medium') : '' }}
+                    </div>
+                  </div>
+
+                  @if (h.note) {
+                    <div class="event-note">{{ h.note }}</div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </section>
+      <aside class="side">
+        <section class="card">
+          <div class="card-title">Summary</div>
+
+          <div class="summary-grid">
+            <div class="summary-item">
+              <div class="summary-k">Current status</div>
+              <div class="summary-v">{{ currentStatus }}</div>
+            </div>
+
+            <div class="summary-item">
+              <div class="summary-k">Last update</div>
+              <div class="summary-v">{{ lastUpdate }}</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-title">Addresses</div>
+
+          <div class="addr">
+            <div class="addr-k">From</div>
+            <div class="addr-v">{{ data?.sender ?? "-" }}</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="addr">
+            <div class="addr-k">To</div>
+            <div class="addr-v">{{ data?.recipient ?? "-" }}</div>
+          </div>
+        </section>
+      </aside>
     </div>
-  </div>
-  <div class="tracking_detail_wrapper">
-    <div class="detail_container">
-      <a class="tracking_detail_titel font">Package:  </a>
-      <a class="tracking_detail_status font">Current Status:  </a>
-      <a class="tracking_detail_update font">Last Update:  </a>
-    </div>
-  </div>
+  }
 </div>
