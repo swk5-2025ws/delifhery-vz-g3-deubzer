@@ -69,8 +69,8 @@ namespace DeliFHery.API.Controllers
             [FromBody] TrackingStatusRequestDto dto,
              CancellationToken ct)
         {
-            var trackingNumber = dto?.TrackingNumber ?? "".Trim();
-            var postalCode = dto?.PostalCode ?? "".Trim();
+            var trackingNumber = (dto?.TrackingNumber ?? "").Trim();
+            var postalCode = (dto?.PostalCode ?? "").Trim();
 
             if (string.IsNullOrWhiteSpace(postalCode) || string.IsNullOrWhiteSpace(trackingNumber))
             {
@@ -109,8 +109,8 @@ namespace DeliFHery.API.Controllers
             [FromBody] TrackingStatusRequestDto dto,
             CancellationToken ct)
         {
-            var trackingNumber = dto.TrackingNumber ?? "".Trim();
-            var postalCode = dto.PostalCode ?? "".Trim();
+            var trackingNumber = (dto.TrackingNumber ?? "").Trim();
+            var postalCode = (dto.PostalCode ?? "").Trim();
 
             if (string.IsNullOrWhiteSpace(trackingNumber) || string.IsNullOrWhiteSpace(postalCode))
             {

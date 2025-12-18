@@ -23,7 +23,7 @@ namespace DeliFHery.API.Repo
                 new QueryParameter("shipmentId", shipmentId),
                 new QueryParameter("customerId", customerId));
 
-            return result.Any();
+            return result.FirstOrDefault() > 0;
         }
 
         public Task SubscribeAsync(int shipmentId, Guid customerId, CancellationToken ct)
@@ -39,7 +39,7 @@ namespace DeliFHery.API.Repo
         public Task UnSubscribeAsync(int shipmentId, Guid customerId, CancellationToken ct)
         {
             const string sql = @"
-                            DELETE FROM [dob].[NotificationSubscription]
+                            DELETE FROM [dbo].[NotificationSubscription]
                             WHERE shipment_id = @shipmentId AND customer_id = @customerId;";
             return _db.ExecuteNonQueryAsync(sql, ct,
                 new QueryParameter("shipmentId", shipmentId),
