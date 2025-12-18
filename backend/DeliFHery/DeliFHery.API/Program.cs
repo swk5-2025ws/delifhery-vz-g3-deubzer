@@ -62,6 +62,7 @@ builder.Services.AddScoped<ITrackingEventRepo, TrackingEventRepo>();
 builder.Services.AddScoped<ICarrierAuthRepo, CarrierAuthRepo>();
 builder.Services.AddScoped<ITrackingEventRepo, TrackingEventRepo>();
 builder.Services.AddScoped<ICarrierTrackingService, CarrierTrackingService>();
+builder.Services.AddScoped<INotificationSubscriptionRepo, NotificationSubscriptionRepo>();
 
 builder.Services.Configure<PaymentOptions>(
     builder.Configuration.GetSection("Payment"));

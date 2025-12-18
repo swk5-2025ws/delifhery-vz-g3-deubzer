@@ -47,8 +47,9 @@ namespace DeliFHery.API.Services
             int x = 40;
             int y = 70;
 
+            x += 360;
             canvas.DrawText("DeliFHery Label", x, y, titlePaint);
-
+            x -= 360;
             y += 60;
             canvas.DrawText($"TRACKING: {trackingNumber}", x, y, textPaint);
 
