@@ -21,6 +21,8 @@ namespace DeliFHery.API.Controllers
             _addressRepo = addressRepo;
             _trackingEventRepo = trackingEventRepo;
         }
+
+        // GET api/tracking/{postalCode}/{trackingNumber}
         [HttpGet("{postalCode}/{trackingNumber}")]
         public async Task<ActionResult<TrackingStatusResponseDto>> GetTrackingStatus([FromRoute] string trackingNumber,
                                                                                      [FromRoute] string postalCode

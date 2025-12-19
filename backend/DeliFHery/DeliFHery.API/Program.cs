@@ -1,5 +1,6 @@
 ﻿using DeliFHery.API.Database; 
 using DeliFHery.API.Interfaces;
+using DeliFHery.API.Models;
 using DeliFHery.API.Repo;
 using DeliFHery.API.Services;
 using DeliFHery.API.Services.PaymentNamespace;
@@ -63,6 +64,10 @@ builder.Services.AddScoped<ICarrierAuthRepo, CarrierAuthRepo>();
 builder.Services.AddScoped<ITrackingEventRepo, TrackingEventRepo>();
 builder.Services.AddScoped<ICarrierTrackingService, CarrierTrackingService>();
 builder.Services.AddScoped<INotificationSubscriptionRepo, NotificationSubscriptionRepo>();
+builder.Services.AddScoped<IEmailSender, EmailSenderService>();
+
+builder.Services.Configure<EmailOptions>(
+    builder.Configuration.GetSection("Email"));
 
 builder.Services.Configure<PaymentOptions>(
     builder.Configuration.GetSection("Payment"));
