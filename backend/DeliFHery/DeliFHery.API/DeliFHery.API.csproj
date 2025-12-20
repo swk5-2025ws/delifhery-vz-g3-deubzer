@@ -26,6 +26,7 @@
     <PackageReference Include="Riok.Mapperly" Version="4.3.0" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.9.0" />
     <PackageReference Include="SkiaSharp" Version="3.119.1" />
+	<PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
     <PackageReference Include="ZXing.Net" Version="0.16.11" />
     <PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.22" />

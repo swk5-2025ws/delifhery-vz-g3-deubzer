@@ -24,18 +24,27 @@ builder.Services.AddCors(option =>
 });
 
 var keycloak = builder.Configuration.GetSection("KeyCloak");
+var authority = keycloak["Authority"]!;
+var audience = keycloak["Audience"]!;
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = keycloak["Authority"];
-        options.Audience = keycloak["Audience"];
+        options.Authority = authority;
+        options.Audience = audience;
         options.RequireHttpsMetadata = bool.Parse(keycloak["RequireHttpsMetadata"] ?? "false");
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidateAudience = true
+            ValidateAudience = true,
+            ValidAudiences = new[] { audience },
+            ValidIssuers = new[]
+          {
+              authority, // http://keycloak:8080/realms/delifhery
+              "http://localhost:8080/realms/delifhery",
+              "http://127.0.0.1:8080/realms/delifhery"
+          }
         };
     });
 

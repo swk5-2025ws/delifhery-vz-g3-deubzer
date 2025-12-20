@@ -6,5 +6,6 @@
         public string StartUrl { get; set; } = default!;
         public string CallbackUrl { get; set; } = default!;
         public string RedirectUrl { get; set; } = default!;
+        public string PublicBaseUrl { get; set; } = default!;
     }
 }   

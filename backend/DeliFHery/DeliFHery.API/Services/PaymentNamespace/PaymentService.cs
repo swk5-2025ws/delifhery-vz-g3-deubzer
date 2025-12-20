@@ -39,7 +39,8 @@ namespace DeliFHery.API.Services.PaymentNamespace
 
         public async Task<PaymentStartResult> StartPaymentAsync(int shipmentId, decimal amount, string currency, CancellationToken ct)
         {
-           var externalPaymentId =  Guid.NewGuid().ToString("N");
+
+            var externalPaymentId =  Guid.NewGuid().ToString("N");
 
             var request = new PaymentStartRequestDto
             {
@@ -48,6 +49,8 @@ namespace DeliFHery.API.Services.PaymentNamespace
                 callbackUrl = _options.CallbackUrl,
                 redirectUrl = _options.RedirectUrl,
             };
+
+            
 
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, _options.StartUrl)
             {
@@ -87,11 +90,33 @@ namespace DeliFHery.API.Services.PaymentNamespace
             };
 
             var paymentId = await _paymentRepo.CreateAsync(payment, ct);
+            var paymentUrl = responseDto.paymentUrl;
+
+
+            if (!string.IsNullOrWhiteSpace(_options.PublicBaseUrl))
+            {
+                if (Uri.TryCreate(paymentUrl, UriKind.Absolute, out var paymentUri) &&
+                    Uri.TryCreate(_options.PublicBaseUrl, UriKind.Absolute, out var publicBase))
+                {
+                    var fixedUri = new UriBuilder(paymentUri)
+                    {
+                        Scheme = publicBase.Scheme,
+                        Host = publicBase.Host,
+                        Port = publicBase.Port
+                    }.Uri;
+
+                    paymentUrl = fixedUri.ToString();
+                }
+            }
+            else
+            {
+                paymentUrl = paymentUrl.Replace("http://opa:8080", "http://localhost:7172");
+            }
 
             return new PaymentStartResult
             {
                 paymentId = paymentId,
-                redirectUrl = responseDto.paymentUrl
+                redirectUrl = paymentUrl
             };
 
         }  

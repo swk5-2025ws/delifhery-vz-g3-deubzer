@@ -65,6 +65,7 @@ namespace DeliFHery.API.Services
                 city = request.SenderCity,
                 postalCode = request.SenderPostalCode,
             };
+            
 
             var recipientAddress = new Address 
             {
@@ -73,9 +74,12 @@ namespace DeliFHery.API.Services
                 city = request.RecipientCity,
                 postalCode = request.RecipientPostalCode,
             };
+           
 
             var senderAddressId = await _addressRepo.CreateAsync(senderAddress,ct);
+            Console.WriteLine("Created sender address");
             var recipientAddressId = await _addressRepo.CreateAsync(recipientAddress,ct);
+            Console.WriteLine("Created recipient address");
 
             var priceResult = await _shippingPriceCalculator.CalculatePriceAsync(
                 new CalculateShipmentPriceRequestDto
@@ -95,6 +99,7 @@ namespace DeliFHery.API.Services
             var totalPrice = priceResult.TotalPrice;
 
             var trackingNumber = await GenerateUniqueTrackingNumberAsync(ct);
+            Console.WriteLine("trackingNumber created");
 
             var shipment = new Shipment
             {
@@ -119,8 +124,10 @@ namespace DeliFHery.API.Services
                 currency = priceResult.Currency,
                 calculatedAt = DateTime.UtcNow
             }, ct);
+            
 
             var paymentResult = await _paymentService.StartPaymentAsync(shipmentId, totalPrice, priceResult.Currency, ct);
+            Console.WriteLine("generatedprice : {0}", totalPrice);
 
             var labelBase = await _labelGenerator.GenerateLabelAsync(
                 trackingNumber,
