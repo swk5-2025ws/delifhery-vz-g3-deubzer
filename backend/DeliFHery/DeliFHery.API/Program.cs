@@ -74,6 +74,8 @@ builder.Services.AddScoped<ITrackingEventRepo, TrackingEventRepo>();
 builder.Services.AddScoped<ICarrierTrackingService, CarrierTrackingService>();
 builder.Services.AddScoped<INotificationSubscriptionRepo, NotificationSubscriptionRepo>();
 builder.Services.AddScoped<IEmailSender, EmailSenderService>();
+builder.Services.AddScoped<ICarrierRepo, CarrierRepo>();
+
 
 builder.Services.Configure<EmailOptions>(
     builder.Configuration.GetSection("Email"));

@@ -49,7 +49,7 @@ namespace DeliFHery.API.Services
                 throw new ArgumentException("Status is required.");
             }
 
-            var shipment = await _shipmentRepo.GetShipmentByTrackingNumber(dto.TrackingNumber, ct);
+            var shipment = await _shipmentRepo.GetShipmentByTrackingNumber(dto.TrackingNumber.Trim(), ct);
             if (shipment == null)
             {
                 throw new KeyNotFoundException("Shipment not found");
@@ -68,15 +68,16 @@ namespace DeliFHery.API.Services
             await _trackingEventRepo.CreateAsync(trackingEvent, ct);
 
             await _shipmentRepo.UpdateStatusAsync(shipment.shipmentId, dto.Status, ct);
-
+            Console.WriteLine("updatetStatus");
             await NotifySubscriptionAsync(shipment, trackingEvent, ct);
         }
 
         private async Task NotifySubscriptionAsync(Shipment shipment, TrackingEvent trackingEvent, CancellationToken ct)
         {
-            var customerIds = await _notificationSubscriptionRepo.GetSubscribedCustomerIdAsync(shipment.shipmentId, ct);
-            if (customerIds.Count == 0) return;
+            var customerIds = await _notificationSubscriptionRepo
+                .GetSubscribedCustomerIdAsync(shipment.shipmentId, ct);
 
+            if (customerIds.Count == 0) return;
 
             var tasks = customerIds.Select(async customerId =>
             {
@@ -87,7 +88,7 @@ namespace DeliFHery.API.Services
 
                     var subject = $"Tracking update: {shipment.trackingNumber}";
                     var body =
-$@"Shipment update
+        $@"Shipment update
 
 Tracking: {shipment.trackingNumber}
 Status: {trackingEvent.status}
@@ -95,16 +96,17 @@ Location: {trackingEvent.location ?? "-"}
 Note: {trackingEvent.note ?? "-"}
 Time: {trackingEvent.occurredAt:yyyy-MM-dd HH:mm:ss}
 ";
+
                     await _emailSender.SendAsync(email, subject, body, ct);
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    Console.WriteLine($"failed to send email to {customerId}: {ex.Message}");
                 }
             });
 
             await Task.WhenAll(tasks);
-
         }
+
     }
 }
