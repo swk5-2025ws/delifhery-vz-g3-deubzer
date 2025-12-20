@@ -5,6 +5,7 @@
 *.vscode/
 *.userosscache
 *.sln.docstates
+.env
 
 # Build artifacts
 bin/

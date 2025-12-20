@@ -76,7 +76,7 @@ services:
       Email__Port: "587"
       Email__UseStarTls: "true"
       Email__Username: "noreplydelifhery@gmail.com"
-      Email__Password: "hohv uyoh uikf bldl"
+      Email__Password: "${EMAIL_PASSWORD}"
       Email__FromName: "DeliFHery Notifications"
       Email__FromEmail: "noreplydelifhery@gmail.com"
 
