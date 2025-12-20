@@ -1,7 +1,8 @@
-﻿using DeliFHery.API.Interfaces;
-using DeliFHery.API.Models;
-using DeliFHery.API.Database;
+﻿using DeliFHery.API.Database;
+using DeliFHery.API.Interfaces;
 using DeliFHery.API.Mappers;
+using DeliFHery.API.Models;
+using ZXing;
 
 namespace DeliFHery.API.Repo
 {
@@ -40,7 +41,21 @@ namespace DeliFHery.API.Repo
                 new QueryParameter("@customer_id",customerId));
 
             return result > 0;
-        } 
+        }
+
+        public async Task<string?> GetPrimaryEmailAsny(Guid customerId, CancellationToken ct)
+        {
+            const string sql = @"
+                            SELECT TOP 1 [value]
+                            FROM [dbo].[ContactMethod]
+                            WHERE customer_id = @customerId
+                                AND [type] = 'email'
+                                AND [is_verified] = 1;";
+             var result = await _db.QueryAsync(sql, r => r.GetString(0), ct,
+                new QueryParameter("customerId", customerId));
+
+            return result.FirstOrDefault();
+        }
 
         public async Task<IEnumerable<ContactMethod>> ListForCustomerAsync(Guid customerId, CancellationToken ct = default)
         {

@@ -11,9 +11,11 @@ namespace DeliFHery.API.Controllers
     public class CarrierTrackingController : ControllerBase
     {
         private readonly ICarrierTrackingService _carrierTrackingService;
-        public CarrierTrackingController(ICarrierTrackingService carrierTrackingService)
+        private readonly ICustomerRepo _customerRepo;
+        public CarrierTrackingController(ICarrierTrackingService carrierTrackingService, ICustomerRepo customerRepo)
         {
             _carrierTrackingService = carrierTrackingService;
+            _customerRepo = customerRepo;
         }
 
         [HttpPost("status")]
@@ -22,6 +24,9 @@ namespace DeliFHery.API.Controllers
             [FromBody] TrackingStatusUpdateDto dto,
             CancellationToken ct)
         {
+
+
+
             await _carrierTrackingService.UpdateStatusAsync(apiKey, dto, ct);
             return Ok(new { message = "Status updated" });
         }

@@ -8,5 +8,6 @@ namespace DeliFHery.API.Interfaces
         Task<IEnumerable<ContactMethod>> ListForCustomerAsync(Guid customerId, CancellationToken ct = default);
         Task<bool> UpdateAsync(ContactMethod contactMethod,CancellationToken ct = default);
         Task<bool> DeleteAsync(Guid customerId,int contactId, CancellationToken ct = default);
+        Task<string?> GetPrimaryEmailAsny(Guid customerId, CancellationToken ct);
     }
 }

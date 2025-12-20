@@ -26,6 +26,19 @@ namespace DeliFHery.API.Repo
             return result.FirstOrDefault() > 0;
         }
 
+        public async Task<IReadOnlyList<Guid>> GetSubscribedCustomerIdAsync(int shipmentId, CancellationToken ct)
+        {
+            const string sql = @"
+                            SELECT customer_id
+                            FROM [dbo].[NotificationSubscription]
+                            WHERE shipment_id = @shipmentId;";
+
+            var result = await _db.QueryAsync(sql, r => r.GetGuid(0), ct,
+                new QueryParameter("shipmentId", shipmentId));
+
+            return result.ToList();
+        }
+
         public Task SubscribeAsync(int shipmentId, Guid customerId, CancellationToken ct)
         {
             const string sql = @"

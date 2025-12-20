@@ -9,17 +9,27 @@ namespace DeliFHery.API.Services
         private readonly ICarrierAuthRepo _authRepo;
         private readonly IShipmentRepo _shipmentRepo;
         private readonly ITrackingEventRepo _trackingEventRepo;
+        private readonly IContactMethodRepo _contactMethodRepo;
+        private readonly INotificationSubscriptionRepo _notificationSubscriptionRepo;
+        private readonly IEmailSender _emailSender;
 
         public CarrierTrackingService(
 
             ICarrierAuthRepo authRepo,
             IShipmentRepo shipmentRepo,
-            ITrackingEventRepo trackingEventRepo
+            ITrackingEventRepo trackingEventRepo,
+            IContactMethodRepo contactMethodRepo,
+            INotificationSubscriptionRepo notificationSubscriptionRepo,
+            IEmailSender emailSender
+
         )
         {
             _authRepo = authRepo;
             _shipmentRepo = shipmentRepo;
             _trackingEventRepo = trackingEventRepo;
+            _contactMethodRepo = contactMethodRepo;
+            _notificationSubscriptionRepo = notificationSubscriptionRepo;
+            _emailSender = emailSender;
         }
 
         public async Task UpdateStatusAsync(string apiKey, TrackingStatusUpdateDto dto, CancellationToken ct)
@@ -45,6 +55,7 @@ namespace DeliFHery.API.Services
                 throw new KeyNotFoundException("Shipment not found");
             }
 
+
             var trackingEvent = new TrackingEvent
             {
                 shipmentId = shipment.shipmentId,
@@ -57,6 +68,43 @@ namespace DeliFHery.API.Services
             await _trackingEventRepo.CreateAsync(trackingEvent, ct);
 
             await _shipmentRepo.UpdateStatusAsync(shipment.shipmentId, dto.Status, ct);
+
+            await NotifySubscriptionAsync(shipment, trackingEvent, ct);
+        }
+
+        private async Task NotifySubscriptionAsync(Shipment shipment, TrackingEvent trackingEvent, CancellationToken ct)
+        {
+            var customerIds = await _notificationSubscriptionRepo.GetSubscribedCustomerIdAsync(shipment.shipmentId, ct);
+            if (customerIds.Count == 0) return;
+
+
+            var tasks = customerIds.Select(async customerId =>
+            {
+                try
+                {
+                    var email = await _contactMethodRepo.GetPrimaryEmailAsny(customerId, ct);
+                    if (string.IsNullOrWhiteSpace(email)) return;
+
+                    var subject = $"Tracking update: {shipment.trackingNumber}";
+                    var body =
+$@"Shipment update
+
+Tracking: {shipment.trackingNumber}
+Status: {trackingEvent.status}
+Location: {trackingEvent.location ?? "-"}
+Note: {trackingEvent.note ?? "-"}
+Time: {trackingEvent.occurredAt:yyyy-MM-dd HH:mm:ss}
+";
+                    await _emailSender.SendAsync(email, subject, body, ct);
+                }
+                catch
+                {
+
+                }
+            });
+
+            await Task.WhenAll(tasks);
+
         }
     }
 }
