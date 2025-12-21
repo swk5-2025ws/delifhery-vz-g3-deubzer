@@ -7,7 +7,6 @@ using DeliFHery.API.Services.PaymentNamespace;
 using DeliFHery.API.Services.Pricing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);

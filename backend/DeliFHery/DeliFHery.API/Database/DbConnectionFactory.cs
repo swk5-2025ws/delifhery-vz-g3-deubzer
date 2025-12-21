@@ -9,7 +9,7 @@ namespace DeliFHery.API.Database
 
         public DbConnectionFactory(string connectionString) => _connectionString = connectionString;
 
-        public async Task<DbConnection> CreateConnectionAsync(CancellationToken ct = default)
+        public async Task<DbConnection> CreateConnectionAsync(CancellationToken ct)
         {
             var conn = new SqlConnection(_connectionString);
             await conn.OpenAsync(ct);

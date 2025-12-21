@@ -15,9 +15,8 @@ namespace DeliFHery.API.Controllers
     public class ContactMethodController(IContactMethodRepo _repo, ICustomerRepo _customer_repo) : ControllerBase
     {
 
-        
+        // GET /api/customers/{customerId}/contactMethod
 
-        // GET /api/customers/<customerId>/contactMethod
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllContactForCustomer(CancellationToken ct)

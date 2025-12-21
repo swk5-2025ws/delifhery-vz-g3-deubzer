@@ -4,6 +4,6 @@ namespace DeliFHery.API.Database
 {
     public interface IDbConnectionFactory
     {
-        Task<DbConnection> CreateConnectionAsync(CancellationToken ct = default);
+        Task<DbConnection> CreateConnectionAsync(CancellationToken ct);
     }
 }

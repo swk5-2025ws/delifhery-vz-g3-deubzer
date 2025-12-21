@@ -45,7 +45,7 @@ namespace DeliFHery.API.Controllers
 
             var userCustomer = await _customerRepo.GetByIdentityProviderUserIdAsync(sub, ct);
             if (userCustomer == null || userCustomer.customerId != id)
-                return Forbid(); // 403 - Zugriff verboten
+                return Forbid();
 
             return Ok(CustomerDtoMapper.ToDto(customer));
         }
