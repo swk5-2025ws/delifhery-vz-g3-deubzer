@@ -17,17 +17,30 @@ namespace DeliFHery.API.Repo
             _mapper = new CustomerContactMapper();
         }
 
+        public async Task<bool> CheckPrimary(Guid customerId, CancellationToken ct)
+        {
+            const string sql = @"
+                            SELECT COUNT(1)
+                            FROM [dbo].[ContactMethod]
+                            WHERE customer_id = @customerId
+                            AND is_primary = 1;";
+
+            var result = await _db.ExecuteScalarAsync<int>(sql,ct,
+                new QueryParameter("customerId", customerId));
+            return result > 0;
+        }
+
         public async Task<int> CreateAsync(ContactMethod contactMethod, CancellationToken ct = default)
         {
             const string sql = @"
-                            INSERT INTO dbo.ContactMethod(customer_id, type, value, is_verified)
-                            VALUES (@customerId, @type , @value, @is_verified);
+                            INSERT INTO [dbo].[ContactMethod] (customer_id, type, value, is_primary)
+                            VALUES (@customerId, @type , @value, @is_primary);
                             SELECT SCOPE_IDENTITY();";
             return await _db.ExecuteInsertIntAsync(sql, ct,
                   new QueryParameter("customerId", contactMethod.customerId),
                   new QueryParameter("type", contactMethod.type),
                   new QueryParameter("value", contactMethod.value),
-                  new QueryParameter("is_verified", contactMethod.isPrimary));
+                  new QueryParameter("is_primary", contactMethod.isPrimary));
         }
 
         public async Task<bool> DeleteAsync(Guid customerId, int contactId, CancellationToken ct = default)
@@ -50,7 +63,7 @@ namespace DeliFHery.API.Repo
                             FROM [dbo].[ContactMethod]
                             WHERE customer_id = @customerId
                                 AND [type] = 'email'
-                                AND [is_verified] = 1;";
+                                AND [is_primary] = 1;";
              var result = await _db.QueryAsync(sql, r => r.GetString(0), ct,
                 new QueryParameter("customerId", customerId));
 
@@ -64,16 +77,39 @@ namespace DeliFHery.API.Repo
                             customer_id,
                             type,
                             value,
-                            is_verified
+                            is_primary
                             FROM [dbo].[ContactMethod]
                             WHERE customer_id = @id";
             return await _db.QueryAsync(sql, _mapper.MapContactMethod, ct,
                   new QueryParameter("id", customerId));
         }
 
-        public Task<bool> UpdateAsync(ContactMethod contactMethod, CancellationToken ct = default)
+        public async Task<int> ClearPrimaryAsync(Guid customerId, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            const string sql = @"
+                          UPDATE [dbo].[ContactMethod]
+                          SET is_primary = 0
+                          WHERE customer_id = @customerId
+                            AND is_primary = 1;";
+            return await _db.ExecuteNonQueryAsync(sql, ct,
+                new QueryParameter("customerId", customerId));
+        }
+
+        public async Task<bool> SetPrimaryAsync(Guid customerId, int contactId, CancellationToken ct)
+        {
+            await ClearPrimaryAsync(customerId, ct);
+
+            const string sql = @"
+                        UPDATE [dbo].[ContactMethod]
+                        SET is_primary = 1
+                        WHERE customer_id = @customerId
+                          AND contact_id = @contactId;";
+
+            var result = await _db.ExecuteNonQueryAsync(sql, ct,
+                new QueryParameter("customerId", customerId),
+                new QueryParameter("contactId", contactId));
+
+            return result > 0;
         }
     }
 }

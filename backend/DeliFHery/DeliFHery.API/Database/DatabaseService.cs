@@ -83,5 +83,24 @@ namespace DeliFHery.API.Database
             return (Guid)obj;
         }
 
+        public async Task<T> ExecuteScalarAsync<T>(
+            string sql,
+            CancellationToken ct = default,
+            params QueryParameter[] parameters)
+        {
+            await using var conn = await _connectionFactory.CreateConnectionAsync(ct);
+            await using var cmd = conn.CreateCommand();
+            cmd.CommandText = sql;
+            AddParameters(cmd, parameters);
+
+            var result = await cmd.ExecuteScalarAsync(ct);
+
+            if (result == null || result == DBNull.Value)
+                return default!;
+
+            return (T)Convert.ChangeType(result, typeof(T))!;
+        }
+
+
     }
 }

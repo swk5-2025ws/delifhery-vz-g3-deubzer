@@ -5,6 +5,7 @@ using DeliFHery.API.Repo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Security.Claims;
 
 namespace DeliFHery.API.Controllers
@@ -60,13 +61,25 @@ namespace DeliFHery.API.Controllers
                 return NotFound("Customer not found for current user");
             }
 
-            var contact = new ContactMethod
+            if (request.IsPrimary) 
             {
-                customerId = customer.customerId,
-                type = request.Type,
-                value = request.Value,
-                isPrimary = request.IsPrimary,
-            };
+                await _repo.ClearPrimaryAsync(customer.customerId, ct);
+            } else
+            {
+                var hasPrimary = await _repo.CheckPrimary(customer.customerId, ct);
+                if (!hasPrimary)
+                {
+                    request.IsPrimary = true;
+                }
+            }
+
+                var contact = new ContactMethod
+                {
+                    customerId = customer.customerId,
+                    type = request.Type,
+                    value = request.Value,
+                    isPrimary = request.IsPrimary,
+                };
 
             var newId = await _repo.CreateAsync(contact, ct);
             contact.contactId = newId;
@@ -99,6 +112,34 @@ namespace DeliFHery.API.Controllers
             }
 
             return NoContent();
+        }
+
+
+        [Authorize]
+        [HttpPut("{contactId}/primary")]
+        public async Task<IActionResult> SetPrimary([FromRoute] int contactId, CancellationToken ct)
+        {
+            var sub =
+                 User.FindFirst("sub")?.Value ??
+                 User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(sub))
+                return Unauthorized("No sub in token");
+
+            var customer = await _customer_repo.GetByIdentityProviderUserIdAsync(sub, ct);
+            if ( customer is null)
+            {
+                return NotFound("Customer not found for current user.");
+            }
+
+            var ok = await _repo.SetPrimaryAsync(customer.customerId, contactId, ct);
+            if (!ok)
+            {
+                return NotFound("Contact Method not found");
+            }
+
+            return NoContent();
+            
         }
 
     }

@@ -40,7 +40,7 @@ BEGIN
 			[customer_id] UNIQUEIDENTIFIER  NOT NULL,
 			[type] [varchar](30) NOT NULL,
 			[value] [varchar](100) NOT NULL,
-			[is_verified] [bit] DEFAULT(0),
+			[is_primary] [bit] DEFAULT(0),
 
 			CONSTRAINT FK_ContactMethod_Customer FOREIGN KEY([customer_id]) REFERENCES [dbo].[Customer]([customer_id]) ON DELETE CASCADE
 		);
