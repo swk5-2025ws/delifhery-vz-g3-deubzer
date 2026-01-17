@@ -78,5 +78,29 @@ namespace DeliFHery.API.Controllers
 
             return Ok(result);
         }
+
+        [Authorize]
+        [HttpGet("myShipments")]
+        public async Task<ActionResult<MyShipmentListDto[]>> GetMyShipments(CancellationToken ct)
+        {
+            var sub =
+                User.FindFirst("sub")?.Value ??
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(sub))
+            {
+                return Unauthorized("No sub in token");
+            }
+
+            var customer = await _customerRepo.GetByIdentityProviderUserIdAsync(sub);
+            if(customer == null)
+            {
+                return Unauthorized("No customer found for current user");
+            }
+
+
+            var list = await _shipmentRepo.GetMyShipmentsList(customer.customerId, ct);
+            return Ok(list.ToArray());
+        }
     }
 }

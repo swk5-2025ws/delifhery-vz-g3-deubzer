@@ -21,5 +21,12 @@
         public float WeightKg { get; set; }
 
 
-    }   
+    } 
+
+    public record MyShipmentListDto
+    (
+         string trackingNumber, 
+         string postalCode,
+         string currentStatus
+    );
 }

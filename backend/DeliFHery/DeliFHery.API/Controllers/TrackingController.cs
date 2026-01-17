@@ -58,7 +58,7 @@ namespace DeliFHery.API.Controllers
                     ? $"{recipientAddress.name}, {recipientAddress.postalCode} {recipientAddress.city}"
                     : "Unbekannt",
                 History = events
-                .OrderBy(e => e.occurredAt)
+                .OrderByDescending(e => e.occurredAt)
                     .Select(e => new TrackingStatusEventDto
                     {
                         OccurredAt = e.occurredAt,

@@ -1,5 +1,6 @@
 ﻿using DeliFHery.API.Database;
 using DeliFHery.API.DBMappers;
+using DeliFHery.API.Dto;
 using DeliFHery.API.Interfaces;
 using DeliFHery.API.Models;
 
@@ -87,6 +88,28 @@ namespace DeliFHery.API.Repo
                             WHERE sender_customer_id = @id";
             return await _db.QueryAsync(sql, _shipmentMapper.MapShipment, ct,
                   new QueryParameter("id", customerId));
+        }
+
+        public async Task<IEnumerable<MyShipmentListDto>> GetMyShipmentsList(Guid customerId, CancellationToken ct)
+        {
+            const string sql = @"
+                        SELECT s.tracking_number,
+                            a.postal_code,
+                            s.current_status
+                        FROM dbo.Shipment s
+                        INNER JOIN dbo.Address a 
+                            ON a.address_id = s.recipient_address_id
+                        WHERE s.sender_customer_id = @id
+                        ORDER BY s.created_at DESC;";
+            return await _db.QueryAsync(sql, mapper => new MyShipmentListDto
+            (
+                mapper.GetString(mapper.GetOrdinal("tracking_number")),
+                mapper.GetString(mapper.GetOrdinal("postal_code")),
+                mapper.GetString(mapper.GetOrdinal("current_status"))
+            ),
+            ct,
+            new QueryParameter("id", customerId)
+            );
         }
 
         public async Task UpdateStatusAsync(int shipmentId, string newStatus, CancellationToken ct)

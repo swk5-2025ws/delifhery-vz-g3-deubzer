@@ -41,11 +41,12 @@ namespace DeliFHery.API.Services.PaymentNamespace
         {
 
             var externalPaymentId =  Guid.NewGuid().ToString("N");
-
+            
             var request = new PaymentStartRequestDto
             {
                 paymentId = externalPaymentId,
                 amount = amount,
+                currency = currency,
                 callbackUrl = _options.CallbackUrl,
                 redirectUrl = _options.RedirectUrl,
             };
