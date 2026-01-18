@@ -46,7 +46,7 @@ namespace DeliFHery.API.Services.PaymentNamespace
             {
                 paymentId = externalPaymentId,
                 amount = amount,
-                currency = currency,
+                currency = "€",
                 callbackUrl = _options.CallbackUrl,
                 redirectUrl = _options.RedirectUrl,
             };

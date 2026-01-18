@@ -91,7 +91,7 @@ BEGIN
 			[price_id] [int] IDENTITY(1,1) PRIMARY KEY,
 			[shipment_id] [int] NOT NULL,
 			[amount] [float] NOT NULL,
-			[currency] [varchar] (10) NOT NULL,
+			[currency] [nvarchar] (10) NOT NULL,
 			[calculated_at] [datetime] NOT NULL DEFAULT GETDATE(),
 
 			CONSTRAINT FK_ShipmentPrice_Shipment FOREIGN KEY ([shipment_id]) REFERENCES [dbo].[Shipment]([shipment_id]) ON DELETE CASCADE
@@ -106,7 +106,7 @@ BEGIN
 			[shipment_id] [int] NOT NULL,
 			[external_payment_id] [varchar](100),
 			[amount] [float],
-			[currency] [varchar](10),
+			[currency] [nvarchar](10),
 			[status] [varchar](30),
 			[callback_url] [varchar](255),
 			[redirect_url] [varchar](255),
