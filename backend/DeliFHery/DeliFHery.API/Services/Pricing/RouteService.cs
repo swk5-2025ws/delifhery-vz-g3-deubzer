@@ -6,8 +6,6 @@ namespace DeliFHery.API.Services.Pricing
     {
         public Task<int> CalculateStatesCrossedAsync(string senderPostalCode, string recipientPostalCode)
         {
-            // TODO: echte Logik / externe API
-            // Demo: wenn erste zwei Ziffern unterschiedlich -> 2 Bundesländer, sonst 1
 
             int result = 0;
             if (senderPostalCode.Length >= 2 && recipientPostalCode.Length >= 2 &&
