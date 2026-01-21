@@ -1,0 +1,21 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.vscode/
+*.userosscache
+*.sln.docstates
+.env
+
+# Build artifacts
+bin/
+obj/
+out/
+Debug/
+Release/
+
+# Temporary files
+*.log
+*.tmp
+*.cache
+*.vsidx

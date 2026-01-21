@@ -1,0 +1,96 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${Sa_Password:-Mark_delifhery_swk5!}
+    ports:
+      - 1433:1433
+    restart: always
+    volumes: 
+      - dbdata:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -U sa -P ${Sa_Password:-Mark_delifhery_swk5!} -C -Q 'SELECT 1' || exit 1"]
+      interval: 3s
+      retries: 10
+      start_period: 5s
+      timeout: 3s
+
+  init-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ../DB/init-db.sql:/usr/src/app/init-db.sql
+    command: >
+      bash -c "
+      /opt/mssql-tools18/bin/sqlcmd -S db -U sa -P ${Sa_Password:-Mark_delifhery_swk5!} -C -i /usr/src/app/init-db.sql
+      "
+
+
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: delifhery-keycloak
+    command: ["start-dev","--import-realm","--http-port=8080"]
+    environment:
+      KEYCLOAK_ADMIN: ${KC_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KC_ADMIN_PASSWORD}
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+      - keycloak_data:/opt/keycloak/data
+  
+  opa: 
+    build: 
+      context: ../../Opa
+      dockerfile: Dockerfile
+    container_name: delifhery-opa
+    ports: 
+      - "7172:8080"
+    
+
+  backend: 
+    build:
+        context: ../backend/DeliFHery/DeliFHery.API
+        dockerfile: Dockerfile
+    container_name: delifhery-backend
+    depends_on: 
+      - db
+      - keycloak
+      - opa
+    environment:
+      ASPNETCORE_URLS : "http://0.0.0.0:8080"     
+      ConnectionStrings__DatabaseConnection: "Server=db,1433;Database=delifhery_db;User Id=sa;Password=${Sa_Password:-Mark_delifhery_swk5!};TrustServerCertificate=True;"
+      Keycloak__Authority: "http://keycloak:8080/realms/delifhery"
+      Keycloak__Audience: "delifhery-api"
+      KeyCloak__RequireHttpsMetadata: "false"
+      Payment__ApiKey: "OPA-12345-67890"
+      Payment__StartUrl: "http://opa:8080/api/payment/create"
+      Payment__CallbackUrl: "http://backend:8080/api/payment/callback"
+      Payment__RedirectUrl: "http://localhost:4200/payment-complete"
+      Payment__PublicBaseUrl: "http://localhost:7172"
+      Email__Host: "smtp.gmail.com"
+      Email__Port: "587"
+      Email__UseStarTls: "true"
+      Email__Username: "noreplydelifhery@gmail.com"
+      Email__Password: "${EMAIL_PASSWORD}"
+      Email__FromName: "DeliFHery Notifications"
+      Email__FromEmail: "noreplydelifhery@gmail.com"
+
+    ports:
+      - "7156:8080"
+  
+  frontend:
+    build:
+      context: ../../delifhery-web-vz-MarkDeubzer/frontend/delifhery_frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    ports: 
+      - "4200:80"
+volumes:
+  dbdata:
+  keycloak_data:
